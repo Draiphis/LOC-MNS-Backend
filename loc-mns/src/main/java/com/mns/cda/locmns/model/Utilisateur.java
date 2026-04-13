@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -27,7 +28,7 @@ public class Utilisateur {
 
     @Column(nullable = false, unique = true)
     @NotBlank( message = "L'email ne peut pas être vide")
-    @Email( message = "L'email est invalide'")
+    @Email( message = "L'email est invalide")
     protected String email;
 
     @Column(nullable = false)
@@ -46,8 +47,15 @@ public class Utilisateur {
 
 
     @Past
-    @NotBlank
     protected LocalDate dateDeNaissance;
+
+    @ManyToMany
+    @JoinTable(
+            name = "utilisateur_role",
+            joinColumns = @JoinColumn(name = "utilisateur_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles;
 
 
 }
