@@ -7,15 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.Set;
+import org.hibernate.validator.constraints.Length;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Type {
+public class Modele {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,14 +24,13 @@ public class Type {
     @NotBlank(message = "Le mot de passe ne peut pas être vide")
     protected String nom;
 
-    @ManyToMany
-    @JoinTable(
-            name = "type_role",
-            joinColumns = @JoinColumn(name = "type_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Role> rolesAutorises;
 
-    @OneToMany(mappedBy = "type")
-    private Set<Modele> modeles;
+    @Column(columnDefinition = "TEXT")
+    @Length(max = 500)
+    protected String description;
+
+    @ManyToOne
+    @JoinColumn(name = "type_id") // FK en base
+    private Type type;
+
 }
