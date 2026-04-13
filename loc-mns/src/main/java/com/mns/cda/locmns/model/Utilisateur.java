@@ -3,10 +3,7 @@ package com.mns.cda.locmns.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,16 +35,18 @@ public class Utilisateur {
 
 
     @Column(nullable = false)
-    @NotBlank(message = "Le mot de passe ne peut pas être vide")
+    @NotBlank(message = "Le nom ne peut pas être vide")
     protected String nom;
 
     @Column(nullable = false)
-    @NotBlank(message = "Le mot de passe ne peut pas être vide")
+    @NotBlank(message = "Le prénom ne peut pas être vide")
     protected String prenom;
 
 
     @Past
+    @NotNull
     protected LocalDate dateDeNaissance;
+
 
     @ManyToMany
     @JoinTable(

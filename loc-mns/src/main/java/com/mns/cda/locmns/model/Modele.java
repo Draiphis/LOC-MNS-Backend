@@ -21,7 +21,7 @@ public class Modele {
     protected Integer id;
 
     @Column(nullable = false)
-    @NotBlank(message = "Le mot de passe ne peut pas être vide")
+    @NotBlank(message = "Le nom ne peut pas être vide")
     protected String nom;
 
 
@@ -32,5 +32,9 @@ public class Modele {
     @ManyToOne
     @JoinColumn(name = "type_id") // FK en base
     private Type type;
+
+    @ManyToOne
+    @JoinColumn(name = "marque_id") // FK en base
+    private Marque marque;
 
 }

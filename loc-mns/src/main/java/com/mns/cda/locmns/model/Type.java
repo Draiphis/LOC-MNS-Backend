@@ -22,7 +22,7 @@ public class Type {
     protected Integer id;
 
     @Column(nullable = false)
-    @NotBlank(message = "Le mot de passe ne peut pas être vide")
+    @NotBlank(message = "Le nom ne peut pas être vide")
     protected String nom;
 
     @ManyToMany
