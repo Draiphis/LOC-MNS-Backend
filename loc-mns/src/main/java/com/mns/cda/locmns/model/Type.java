@@ -1,5 +1,6 @@
 package com.mns.cda.locmns.model;
 
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -9,13 +10,12 @@ import lombok.Setter;
 
 import java.util.Set;
 
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Role {
+public class Type {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,9 +25,11 @@ public class Role {
     @NotBlank(message = "Le mot de passe ne peut pas être vide")
     protected String nom;
 
-    @ManyToMany(mappedBy = "roles")
-    private Set<Utilisateur> utilisateurs;
-
-    @ManyToMany(mappedBy = "rolesAutorises")
-    private Set<Type> types;
+    @ManyToMany
+    @JoinTable(
+            name = "type_role",
+            joinColumns = @JoinColumn(name = "type_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> rolesAutorises;
 }
