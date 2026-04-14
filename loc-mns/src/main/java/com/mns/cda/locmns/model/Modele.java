@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -36,5 +38,8 @@ public class Modele {
     @ManyToOne
     @JoinColumn(name = "marque_id") // FK en base
     private Marque marque;
+
+    @OneToMany(mappedBy = "modele")
+    private Set<Materiel> materiaux;
 
 }
