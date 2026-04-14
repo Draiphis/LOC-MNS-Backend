@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 
 @Getter
 @Setter
@@ -26,4 +28,7 @@ public class Materiel {
     @ManyToOne
     @JoinColumn(name = "modele_id") // FK en base
     private Modele modele;
+
+    @OneToMany(mappedBy = "materiel")
+    private Set<Emprunt> emprunts;
 }

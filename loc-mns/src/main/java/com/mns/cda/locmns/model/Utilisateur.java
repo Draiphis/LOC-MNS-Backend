@@ -56,5 +56,8 @@ public class Utilisateur {
     )
     private Set<Role> roles;
 
+    @OneToMany(mappedBy = "utilisateur")
+    private Set<Emprunt> emprunts;
+
 
 }
