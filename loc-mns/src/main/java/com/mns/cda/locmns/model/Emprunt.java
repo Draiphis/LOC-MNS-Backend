@@ -13,6 +13,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -51,6 +52,9 @@ public class Emprunt {
     @ManyToOne
     @JoinColumn(name = "validateur_id") // FK en base
     private Utilisateur validateurEmprunt;
+
+    @OneToMany(mappedBy = "demandeConcernantEmprunt")
+    private Set<DemandeUtilisateur> demandes;
 
 
 

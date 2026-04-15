@@ -62,5 +62,8 @@ public class Utilisateur {
     @OneToMany(mappedBy = "validateurEmprunt")
     private Set<Emprunt> empruntsValides;
 
+    @OneToMany(mappedBy = "demandeValidation")
+    private Set<DemandeUtilisateur> demandesValides;
+
 
 }
