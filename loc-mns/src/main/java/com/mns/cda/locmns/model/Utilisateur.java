@@ -56,8 +56,11 @@ public class Utilisateur {
     )
     private Set<Role> roles;
 
-    @OneToMany(mappedBy = "utilisateur")
+    @OneToMany(mappedBy = "demandeur")
     private Set<Emprunt> emprunts;
+
+    @OneToMany(mappedBy = "validateurEmprunt")
+    private Set<Emprunt> empruntsValides;
 
 
 }

@@ -45,8 +45,12 @@ public class Emprunt {
     private Materiel materiel;
 
     @ManyToOne
-    @JoinColumn(name = "utilisateur_id") // FK en base
-    private Utilisateur utilisateur;
+    @JoinColumn(name = "demandeur_id") // FK en base
+    private Utilisateur demandeur;
+
+    @ManyToOne
+    @JoinColumn(name = "validateur_id") // FK en base
+    private Utilisateur validateurEmprunt;
 
 
 
