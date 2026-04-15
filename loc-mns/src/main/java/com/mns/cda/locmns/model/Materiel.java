@@ -31,4 +31,7 @@ public class Materiel {
 
     @OneToMany(mappedBy = "materiel")
     private Set<Emprunt> emprunts;
+
+    @OneToMany(mappedBy = "materiel")
+    private Set<Documentation> documents;
 }
