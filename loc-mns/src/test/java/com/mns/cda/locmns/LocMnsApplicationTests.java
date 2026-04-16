@@ -8,6 +8,7 @@ class LocMnsApplicationTests {
 
     @Test
     void contextLoads() {
+        System.out.println("ca marche ?" );
     }
 
 }
