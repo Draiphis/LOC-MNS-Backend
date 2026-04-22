@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -57,13 +58,13 @@ public class Utilisateur {
     private Set<Role> roles;
 
     @OneToMany(mappedBy = "demandeur")
-    private Set<Emprunt> emprunts;
+    private List<Emprunt> emprunts;
 
     @OneToMany(mappedBy = "validateurEmprunt")
-    private Set<Emprunt> empruntsValides;
+    private List<Emprunt> empruntsValides;
 
     @OneToMany(mappedBy = "demandeValidation")
-    private Set<DemandeUtilisateur> demandesValides;
+    private List<DemandeUtilisateur> demandesValides;
 
 
 }

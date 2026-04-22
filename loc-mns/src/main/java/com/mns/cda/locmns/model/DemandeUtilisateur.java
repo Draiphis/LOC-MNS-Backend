@@ -51,6 +51,6 @@ public class DemandeUtilisateur {
 
     @ManyToOne
     @JoinColumn(name = "utilisateur_id") // FK en base
-    private Emprunt demandeValidation;
+    private Utilisateur demandeValidation;
 
 }
