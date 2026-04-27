@@ -17,6 +17,7 @@ public class ModeleService {
         Modele u = new Modele();
         
         u.setNom(dto.getNom());
+        u.setDescription(dto.getDescription());
         
 
         return modeleDao.save(u);
@@ -28,6 +29,7 @@ public class ModeleService {
                 .orElseThrow(() -> new RuntimeException("Modele non trouvé"));
         
         u.setNom(dto.getNom());
+        u.setDescription((dto.getDescription()));
         modeleDao.save(u);
     }
 
