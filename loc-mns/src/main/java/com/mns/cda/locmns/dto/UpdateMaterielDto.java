@@ -9,6 +9,6 @@ import lombok.Setter;
 public class UpdateMaterielDto {
 
     @NotBlank
-    private String nom;
+    private String reference;
 
 }
