@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UpdateDocumentDto {
+public class UpdateDocumentationDto {
 
 
     protected String description;
