@@ -39,3 +39,10 @@ VALUES
     ('TAB-001', 2),
     ('SALLE-203', 3),
     ('BOOK-CC-001', 4);
+
+INSERT INTO type (nom)
+VALUES
+    ('ordinateur'),
+    ('tablette'),
+    ('salle'),
+    ('livre');
