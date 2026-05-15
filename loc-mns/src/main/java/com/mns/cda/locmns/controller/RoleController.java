@@ -2,12 +2,9 @@ package com.mns.cda.locmns.controller;
 
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.mns.cda.locmns.dto.CreateRoleDto;
-import com.mns.cda.locmns.dto.UpdateRoleDto;
 import com.mns.cda.locmns.model.Role;
 import com.mns.cda.locmns.service.RoleService;
 import com.mns.cda.locmns.view.RoleView;
-import com.mns.cda.locmns.view.UtilisateurView;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -38,21 +35,6 @@ public class RoleController {
         return ResponseEntity.ok(service.getById(id));
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<Role> create(
-            @RequestBody @Valid CreateRoleDto dto) {
-
-        return new ResponseEntity<>(service.create(dto), HttpStatus.CREATED);
-    }
-
-    @PutMapping("/modify/{id}")
-    public ResponseEntity<Void> update(
-            @PathVariable int id,
-            @RequestBody @Valid UpdateRoleDto dto) {
-
-        service.update(id, dto);
-        return ResponseEntity.noContent().build();
-    }
 
     @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
