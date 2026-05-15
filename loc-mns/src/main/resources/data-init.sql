@@ -25,12 +25,110 @@ VALUES
     ('RESEAU');
 
 
-INSERT INTO modele (nom, description)
+INSERT INTO modele (nom, description, type_id, marque_id)
 VALUES
-    ('asus rogue 2', 'ordinateur portable avec 16 go de mémoire et intel core i7'),
-    ('nokia 3310 long', 'tablette de dessin graphique 25 pouces avec stylet'),
-    ('salle 203', 'salle de cours avec tableau interactif, capacité 24 places'),
-    ('clean code', 'livre sur les bonnes pratiques en developpement et notamment le clean code');
+
+-- ORDINATEURS
+(
+    'ROG Strix G16',
+    'ordinateur portable gaming Asus avec Intel Core i7 et 16 Go de RAM',
+    1,
+    1
+),
+
+(
+    'MacBook Pro M3',
+    'ordinateur portable Apple avec puce M3 et écran Retina',
+    1,
+    2
+),
+
+(
+    'Dell Latitude 5540',
+    'ordinateur professionnel destiné à la bureautique et au développement',
+    1,
+    4
+),
+
+(
+    'HP EliteBook 840',
+    'ordinateur portable professionnel HP avec station d’accueil USB-C',
+    1,
+    5
+),
+
+(
+    'ThinkPad T14',
+    'ordinateur Lenovo robuste pour le développement et les environnements professionnels',
+    1,
+    6
+),
+
+-- TABLETTES
+(
+    'Galaxy Tab S9',
+    'tablette Samsung avec écran AMOLED et stylet S-Pen',
+    2,
+    3
+),
+
+(
+    'iPad Pro 13',
+    'tablette Apple haute performance pour design et multimédia',
+    2,
+    2
+),
+
+(
+    'Wacom Intuos Pro',
+    'tablette graphique professionnelle avec stylet pour le design',
+    2,
+    8
+),
+
+-- SALLES
+(
+    'Salle Réseau 203',
+    'salle équipée de switches Cisco et d’un vidéoprojecteur',
+    3,
+    7
+),
+
+(
+    'Salle Design 105',
+    'salle équipée de postes Apple et tablettes graphiques',
+    3,
+    2
+),
+
+(
+    'Salle Dev 301',
+    'salle de développement avec postes fixes et double écrans',
+    3,
+    4
+),
+
+-- LIVRES
+(
+    'Clean Code',
+    'ouvrage sur les bonnes pratiques de développement logiciel',
+    4,
+    9
+),
+
+(
+    'The Pragmatic Programmer',
+    'livre de référence pour développeurs professionnels',
+    4,
+    10
+),
+
+(
+    'Computer Networking Basics',
+    'livre d’introduction aux réseaux informatiques',
+    4,
+    10
+);
 
 INSERT INTO materiel (reference, modele_id)
 VALUES
