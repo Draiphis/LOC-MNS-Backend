@@ -46,3 +46,14 @@ VALUES
     ('tablette'),
     ('salle'),
     ('livre');
+
+INSERT INTO marque (nom)
+VALUES
+    ('Asus'),
+    ('Apple'),
+    ('Samsung'),
+    ('Logitech'),
+    ('Dell'),
+    ('HP'),
+    ('Cisco'),
+    ('No Starch Press');
