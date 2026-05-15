@@ -1,10 +1,12 @@
 package com.mns.cda.locmns.controller;
 
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.locmns.dto.CreateMaterielDto;
 import com.mns.cda.locmns.dto.UpdateMaterielDto;
 import com.mns.cda.locmns.model.Materiel;
 import com.mns.cda.locmns.service.MaterielService;
+import com.mns.cda.locmns.view.MaterielView;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,11 +26,13 @@ public class MaterielController {
     private final MaterielService service;
 
     @GetMapping("/list")
+    @JsonView(MaterielView.class )
     public List<Materiel> getAll() {
         return service.getAll();
     }
 
     @GetMapping("/{id}")
+    @JsonView(MaterielView.class )
     public ResponseEntity<Materiel> get(@PathVariable int id) {
         return ResponseEntity.ok(service.getById(id));
     }
