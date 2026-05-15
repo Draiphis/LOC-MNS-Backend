@@ -5,12 +5,7 @@ VALUES
     ('paul.durand@example.com', '$2a$10$hashedpassword3', 'Durand', 'Paul', '1998-01-10'),
     ('sophie.bernard@example.com', '$2a$10$hashedpassword4', 'Bernard', 'Sophie', '1992-07-03');
 
-INSERT INTO type (nom)
-VALUES
-    ('ordinateur'),
-    ('tablette'),
-    ('salle'),
-    ('livre');
+
 
 INSERT INTO role (role)
 VALUES
@@ -23,6 +18,34 @@ VALUES
     ('ADMINISTRATION'),
     ('COMMERCE'),
     ('RESEAU');
+
+INSERT INTO utilisateur_role (utilisateur_id, role_id)
+VALUES
+    (1, 2), -- Jean -> CDA
+    (2, 4), -- Marie -> PROF
+    (3, 5), -- Paul -> ELEVE
+    (4, 6); -- Sophie -> ADMIN
+
+
+INSERT INTO type (nom)
+VALUES
+    ('ordinateur'),
+    ('tablette'),
+    ('salle'),
+    ('livre');
+
+INSERT INTO marque (nom)
+VALUES
+    ('Asus'),
+    ('Apple'),
+    ('Samsung'),
+    ('Dell'),
+    ('HP'),
+    ('Lenovo'),
+    ('Cisco'),
+    ('Logitech'),
+    ('No Starch Press'),
+    ('Pearson');
 
 
 INSERT INTO modele (nom, description, type_id, marque_id)
@@ -130,6 +153,30 @@ VALUES
     10
 );
 
+INSERT INTO type_role (type_id, role_id)
+VALUES
+
+-- ordinateur
+(1, 2),
+(1, 6),
+(1, 9),
+
+-- tablette
+(2, 2),
+(2, 3),
+(2, 6),
+
+-- salle
+(3, 4),
+(3, 6),
+(3, 7),
+
+-- livre
+(4, 2),
+(4, 4),
+(4, 5),
+(4, 6);
+
 INSERT INTO materiel (reference, modele_id)
 VALUES
     ('PC-001', 1),
@@ -137,21 +184,3 @@ VALUES
     ('TAB-001', 2),
     ('SALLE-203', 3),
     ('BOOK-CC-001', 4);
-
-INSERT INTO type (nom)
-VALUES
-    ('ordinateur'),
-    ('tablette'),
-    ('salle'),
-    ('livre');
-
-INSERT INTO marque (nom)
-VALUES
-    ('Asus'),
-    ('Apple'),
-    ('Samsung'),
-    ('Logitech'),
-    ('Dell'),
-    ('HP'),
-    ('Cisco'),
-    ('No Starch Press');
