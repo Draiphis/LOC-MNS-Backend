@@ -2,6 +2,7 @@ package com.mns.cda.locmns.model;
 
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.mns.cda.locmns.view.ModeleView;
 import com.mns.cda.locmns.view.TypeView;
 import com.mns.cda.locmns.view.UtilisateurView;
 import jakarta.persistence.*;
@@ -22,12 +23,12 @@ public class Type {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView(TypeView.class )
+    @JsonView({TypeView.class, ModeleView.class} )
     protected Integer id;
 
     @Column(nullable = false)
     @NotBlank(message = "Le nom ne peut pas être vide")
-    @JsonView(TypeView.class )
+    @JsonView({TypeView.class, ModeleView.class} )
     protected String nom;
 
     @ManyToMany
