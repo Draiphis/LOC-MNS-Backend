@@ -1,10 +1,13 @@
 package com.mns.cda.locmns.controller;
 
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.locmns.dto.CreateRoleDto;
 import com.mns.cda.locmns.dto.UpdateRoleDto;
 import com.mns.cda.locmns.model.Role;
 import com.mns.cda.locmns.service.RoleService;
+import com.mns.cda.locmns.view.RoleView;
+import com.mns.cda.locmns.view.UtilisateurView;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,11 +27,13 @@ public class RoleController {
     private final RoleService service;
 
     @GetMapping("/list")
+    @JsonView(RoleView.class)
     public List<Role> getAll() {
         return service.getAll();
     }
 
     @GetMapping("/{id}")
+    @JsonView(RoleView.class)
     public ResponseEntity<Role> get(@PathVariable int id) {
         return ResponseEntity.ok(service.getById(id));
     }
