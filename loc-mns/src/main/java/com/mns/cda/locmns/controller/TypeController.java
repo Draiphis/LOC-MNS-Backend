@@ -1,10 +1,12 @@
 package com.mns.cda.locmns.controller;
 
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.locmns.dto.CreateTypeDto;
 import com.mns.cda.locmns.dto.UpdateTypeDto;
 import com.mns.cda.locmns.model.Type;
 import com.mns.cda.locmns.service.TypeService;
+import com.mns.cda.locmns.view.TypeView;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,11 +26,13 @@ public class TypeController {
     private final TypeService service;
 
     @GetMapping("/list")
+    @JsonView(TypeView.class )
     public List<Type> getAll() {
         return service.getAll();
     }
 
     @GetMapping("/{id}")
+    @JsonView(TypeView.class )
     public ResponseEntity<Type> get(@PathVariable int id) {
         return ResponseEntity.ok(service.getById(id));
     }
