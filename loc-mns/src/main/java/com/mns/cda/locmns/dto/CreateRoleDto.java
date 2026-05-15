@@ -1,5 +1,6 @@
 package com.mns.cda.locmns.dto;
 
+import com.mns.cda.locmns.model.RoleNom;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +10,6 @@ import lombok.Setter;
 public class CreateRoleDto {
 
     @NotBlank
-    private String nom;
+    private RoleNom role;
 
 }

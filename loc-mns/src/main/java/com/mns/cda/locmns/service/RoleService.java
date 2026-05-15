@@ -16,7 +16,7 @@ public class RoleService {
     public Role create(CreateRoleDto dto) {
         Role u = new Role();
         
-        u.setNom(dto.getNom());
+        u.setRole(dto.getRole());
         
 
         return roleDao.save(u);
@@ -27,7 +27,7 @@ public class RoleService {
         Role u = roleDao.findById(id)
                 .orElseThrow(() -> new RuntimeException("Role non trouvé"));
         
-        u.setNom(dto.getNom());
+        u.setRole(dto.getRole());
         roleDao.save(u);
     }
 

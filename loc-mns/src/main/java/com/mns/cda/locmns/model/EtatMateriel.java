@@ -35,6 +35,7 @@ public class EtatMateriel {
     @ManyToOne
     @MapsId("etatId")
     @JoinColumn(name = "etat_id")
+    @Enumerated(EnumType.STRING)
     protected Etat etat;
 
     @ManyToOne

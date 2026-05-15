@@ -23,7 +23,8 @@ public class Role {
 
     @Column(nullable = false)
     @NotBlank(message = "Le nom ne peut pas être vide")
-    protected String nom;
+    @Enumerated(EnumType.STRING)
+    protected RoleNom role;
 
     @ManyToMany(mappedBy = "roles")
     private Set<Utilisateur> utilisateurs;

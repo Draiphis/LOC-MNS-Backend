@@ -12,12 +12,17 @@ VALUES
     ('salle'),
     ('livre');
 
-INSERT INTO role (nom)
+INSERT INTO role (role)
 VALUES
-    ('etudiant'),
-    ('formateur'),
-    ('developpeur'),
-    ('reseau');
+    ('DEFAULT'),
+    ('CDA'),
+    ('DESIGN'),
+    ('PROF'),
+    ('ELEVE'),
+    ('ADMIN'),
+    ('ADMINISTRATION'),
+    ('COMMERCE'),
+    ('RESEAU');
 
 
 INSERT INTO modele (nom, description)
