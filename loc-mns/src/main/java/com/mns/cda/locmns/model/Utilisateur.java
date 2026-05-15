@@ -38,6 +38,7 @@ public class Utilisateur {
     @Column(nullable = false)
     @NotBlank( groups = {OnCreate.class,OnUpdate.class},message = "Le mot de passe ne peut pas être vide")
     @Size(min = 8, max = 36)
+    @JsonView(UtilisateurView.class)
     protected String password;
 
 
@@ -64,6 +65,7 @@ public class Utilisateur {
             joinColumns = @JoinColumn(name = "utilisateur_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+    @JsonView(UtilisateurView.class)
     private Set<Role> roles;
 
     @OneToMany(mappedBy = "demandeur")

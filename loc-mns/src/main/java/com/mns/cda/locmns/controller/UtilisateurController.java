@@ -1,10 +1,12 @@
 package com.mns.cda.locmns.controller;
 
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.locmns.dto.CreateUtilisateurDto;
 import com.mns.cda.locmns.dto.UpdateUtilisateurDto;
 import com.mns.cda.locmns.model.Utilisateur;
 import com.mns.cda.locmns.service.UtilisateurService;
+import com.mns.cda.locmns.view.UtilisateurView;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,11 +26,13 @@ public class UtilisateurController {
     private final UtilisateurService service;
 
     @GetMapping("/list")
+    @JsonView(UtilisateurView.class)
     public List<Utilisateur> getAll() {
         return service.getAll();
     }
 
     @GetMapping("/{id}")
+    @JsonView(UtilisateurView.class)
     public ResponseEntity<Utilisateur> get(@PathVariable int id) {
         return ResponseEntity.ok(service.getById(id));
     }
