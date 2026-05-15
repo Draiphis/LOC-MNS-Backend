@@ -31,3 +31,11 @@ VALUES
     ('nokia 3310 long', 'tablette de dessin graphique 25 pouces avec stylet'),
     ('salle 203', 'salle de cours avec tableau interactif, capacité 24 places'),
     ('clean code', 'livre sur les bonnes pratiques en developpement et notamment le clean code');
+
+INSERT INTO materiel (reference, modele_id)
+VALUES
+    ('PC-001', 1),
+    ('PC-002', 1),
+    ('TAB-001', 2),
+    ('SALLE-203', 3),
+    ('BOOK-CC-001', 4);
