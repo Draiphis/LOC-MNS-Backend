@@ -8,6 +8,8 @@ import com.mns.cda.locmns.model.Role;
 import com.mns.cda.locmns.model.RoleNom;
 import com.mns.cda.locmns.model.Utilisateur;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -17,13 +19,16 @@ import java.util.Set;
 public class UtilisateurService {
     private final UtilisateurDao utilisateurDao;
     private final RoleDao roleDao;
+    private final PasswordEncoder passwordEncoder;
 
     // CREATE
     public Utilisateur create(CreateUtilisateurDto dto) {
         Utilisateur u = new Utilisateur();
 
+
+        u.setId(null);
         u.setEmail(dto.getEmail());
-        u.setPassword(dto.getPassword());
+        u.setPassword(passwordEncoder.encode(dto.getPassword()));
         u.setNom(dto.getNom());
         u.setPrenom(dto.getPrenom());
         u.setDateDeNaissance(dto.getDateDeNaissance());
@@ -43,7 +48,7 @@ public class UtilisateurService {
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
 
         u.setEmail(dto.getEmail());
-        u.setPassword(dto.getPassword());
+        u.setPassword(passwordEncoder.encode(dto.getPassword()));
         u.setNom(dto.getNom());
         u.setPrenom(dto.getPrenom());
         u.setDateDeNaissance(dto.getDateDeNaissance());
@@ -68,5 +73,14 @@ public class UtilisateurService {
     // GET ALL
     public java.util.List<Utilisateur> getAll() {
         return utilisateurDao.findAll();
+    }
+
+    public Utilisateur insert(Utilisateur utilisateur){
+        utilisateur.setId(null);
+        utilisateur.setPassword(passwordEncoder.encode(utilisateur.getPassword()));
+
+        utilisateurDao.save(utilisateur);
+
+        return utilisateur;
     }
 }

@@ -1,9 +1,11 @@
+--password = rootroot
+
 INSERT INTO utilisateur (email, password, nom, prenom, date_de_naissance)
 VALUES
-    ('jean.dupont@example.com', '$2a$10$hashedpassword1', 'Dupont', 'Jean', '1990-05-14'),
-    ('marie.martin@example.com', '$2a$10$hashedpassword2', 'Martin', 'Marie', '1985-09-22'),
-    ('paul.durand@example.com', '$2a$10$hashedpassword3', 'Durand', 'Paul', '1998-01-10'),
-    ('sophie.bernard@example.com', '$2a$10$hashedpassword4', 'Bernard', 'Sophie', '1992-07-03');
+    ('jean.dupont@example.com', '$2a$10$K/du.sGTNzIYFYjPYlsa1uXLP54JcVEAKhbdw3.p6qGbce7Nzr9yW', 'Dupont', 'Jean', '1990-05-14'),
+    ('marie.martin@example.com', '$2a$10$K/du.sGTNzIYFYjPYlsa1uXLP54JcVEAKhbdw3.p6qGbce7Nzr9yW', 'Martin', 'Marie', '1985-09-22'),
+    ('paul.durand@example.com', '$2a$10$K/du.sGTNzIYFYjPYlsa1uXLP54JcVEAKhbdw3.p6qGbce7Nzr9yW', 'Durand', 'Paul', '1998-01-10'),
+    ('sophie.bernard@example.com', '$2a$10$K/du.sGTNzIYFYjPYlsa1uXLP54JcVEAKhbdw3.p6qGbce7Nzr9yW', 'Bernard', 'Sophie', '1992-07-03');
 
 
 
@@ -21,10 +23,14 @@ VALUES
 
 INSERT INTO utilisateur_role (utilisateur_id, role_id)
 VALUES
-    (1, 2), -- Jean -> CDA
-    (2, 4), -- Marie -> PROF
-    (3, 5), -- Paul -> ELEVE
-    (4, 6); -- Sophie -> ADMIN
+    (1, 2),
+    (1, 1),
+    (2, 4),
+    (2, 1),
+    (3, 5),
+    (3, 1),
+    (4, 6),
+    (4, 1);
 
 
 INSERT INTO type (nom)
