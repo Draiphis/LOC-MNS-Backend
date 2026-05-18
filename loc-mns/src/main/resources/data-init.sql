@@ -48,12 +48,13 @@ VALUES
     ('Pearson');
 
 
-INSERT INTO modele (nom, description, type_id, marque_id)
+INSERT INTO modele (nom, image, description, type_id, marque_id)
 VALUES
 
 -- ORDINATEURS
 (
     'ROG Strix G16',
+    'asus_rogue.png',
     'ordinateur portable gaming Asus avec Intel Core i7 et 16 Go de RAM',
     1,
     1
@@ -61,6 +62,7 @@ VALUES
 
 (
     'MacBook Pro M3',
+    'macbook.png',
     'ordinateur portable Apple avec puce M3 et écran Retina',
     1,
     2
@@ -68,6 +70,7 @@ VALUES
 
 (
     'Dell Latitude 5540',
+    'dell_latitude.png',
     'ordinateur professionnel destiné à la bureautique et au développement',
     1,
     4
@@ -75,6 +78,7 @@ VALUES
 
 (
     'HP EliteBook 840',
+    'hp_elitebook.png',
     'ordinateur portable professionnel HP avec station d’accueil USB-C',
     1,
     5
@@ -82,6 +86,7 @@ VALUES
 
 (
     'ThinkPad T14',
+    'thinkpad.png',
     'ordinateur Lenovo robuste pour le développement et les environnements professionnels',
     1,
     6
@@ -90,6 +95,7 @@ VALUES
 -- TABLETTES
 (
     'Galaxy Tab S9',
+    'galaxytab.png',
     'tablette Samsung avec écran AMOLED et stylet S-Pen',
     2,
     3
@@ -97,6 +103,7 @@ VALUES
 
 (
     'iPad Pro 13',
+    'ipad13.png',
     'tablette Apple haute performance pour design et multimédia',
     2,
     2
@@ -104,6 +111,7 @@ VALUES
 
 (
     'Wacom Intuos Pro',
+    'wacom.png',
     'tablette graphique professionnelle avec stylet pour le design',
     2,
     8
@@ -111,21 +119,24 @@ VALUES
 
 -- SALLES
 (
-    'Salle Réseau 203',
+    'Salle Réseau 204',
+    'salle204.png',
     'salle équipée de switches Cisco et d’un vidéoprojecteur',
     3,
     7
 ),
 
 (
-    'Salle Design 105',
+    'Salle Design 104',
+    'salle104.png',
     'salle équipée de postes Apple et tablettes graphiques',
     3,
     2
 ),
 
 (
-    'Salle Dev 301',
+    'Salle Dev 203',
+    'salle203.png',
     'salle de développement avec postes fixes et double écrans',
     3,
     4
@@ -134,6 +145,7 @@ VALUES
 -- LIVRES
 (
     'Clean Code',
+    'clean_code.png',
     'ouvrage sur les bonnes pratiques de développement logiciel',
     4,
     9
@@ -141,6 +153,7 @@ VALUES
 
 (
     'The Pragmatic Programmer',
+    'pragmatic_programmer.png',
     'livre de référence pour développeurs professionnels',
     4,
     10
@@ -148,6 +161,7 @@ VALUES
 
 (
     'Computer Networking Basics',
+    'computer_network_basics.png',
     'livre d’introduction aux réseaux informatiques',
     4,
     10

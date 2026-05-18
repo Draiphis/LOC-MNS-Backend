@@ -32,6 +32,10 @@ public class Modele {
     @JsonView({ModeleView.class, MaterielView.class} )
     protected String nom;
 
+    @Column(nullable = false)
+    @JsonView({ModeleView.class, MaterielView.class} )
+    protected String image;
+
 
     @Column(columnDefinition = "TEXT")
     @Length(max = 500)
