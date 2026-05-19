@@ -4,7 +4,11 @@ import com.mns.cda.locmns.dao.ModeleDao;
 import com.mns.cda.locmns.dto.CreateModeleDto;
 import com.mns.cda.locmns.dto.UpdateModeleDto;
 import com.mns.cda.locmns.model.Modele;
+import com.mns.cda.locmns.security.UtilisateurDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
 @Service
