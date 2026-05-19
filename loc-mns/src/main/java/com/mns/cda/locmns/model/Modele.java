@@ -32,7 +32,7 @@ public class Modele {
     @JsonView({ModeleView.class, MaterielView.class} )
     protected String nom;
 
-    @Column(nullable = false)
+    @Column()
     @JsonView({ModeleView.class, MaterielView.class} )
     protected String image;
 
