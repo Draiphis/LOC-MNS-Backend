@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.locmns.dto.CreateModeleDto;
 import com.mns.cda.locmns.dto.UpdateModeleDto;
 import com.mns.cda.locmns.model.Modele;
+import com.mns.cda.locmns.security.IsAdmin;
+import com.mns.cda.locmns.security.IsUser;
 import com.mns.cda.locmns.service.ModeleService;
 import com.mns.cda.locmns.view.ModeleView;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,18 +30,20 @@ public class ModeleController {
 
     @GetMapping("/list")
     @JsonView(ModeleView.class )
-    @PreAuthorize("hasAnyRole('ROLE_DEFAULT')")
+    @IsUser
     public List<Modele> getAll() {
         return service.getAll();
     }
 
     @GetMapping("/{id}")
     @JsonView(ModeleView.class )
+    @IsUser
     public ResponseEntity<Modele> get(@PathVariable int id) {
         return ResponseEntity.ok(service.getById(id));
     }
 
     @PostMapping("/create")
+    @IsAdmin
     public ResponseEntity<Modele> create(
             @RequestBody @Valid CreateModeleDto dto) {
 
@@ -47,6 +51,7 @@ public class ModeleController {
     }
 
     @PutMapping("/modify/{id}")
+    @IsAdmin
     public ResponseEntity<Void> update(
             @PathVariable int id,
             @RequestBody @Valid UpdateModeleDto dto) {
@@ -56,6 +61,7 @@ public class ModeleController {
     }
 
     @DeleteMapping("delete/{id}")
+    @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
