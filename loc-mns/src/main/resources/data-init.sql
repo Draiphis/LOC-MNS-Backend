@@ -5,7 +5,8 @@ VALUES
     ('jean.dupont@example.com', '$2a$10$K/du.sGTNzIYFYjPYlsa1uXLP54JcVEAKhbdw3.p6qGbce7Nzr9yW', 'Dupont', 'Jean', '1990-05-14'),
     ('marie.martin@example.com', '$2a$10$K/du.sGTNzIYFYjPYlsa1uXLP54JcVEAKhbdw3.p6qGbce7Nzr9yW', 'Martin', 'Marie', '1985-09-22'),
     ('paul.durand@example.com', '$2a$10$K/du.sGTNzIYFYjPYlsa1uXLP54JcVEAKhbdw3.p6qGbce7Nzr9yW', 'Durand', 'Paul', '1998-01-10'),
-    ('sophie.bernard@example.com', '$2a$10$K/du.sGTNzIYFYjPYlsa1uXLP54JcVEAKhbdw3.p6qGbce7Nzr9yW', 'Bernard', 'Sophie', '1992-07-03');
+    ('sophie.bernard@example.com', '$2a$10$K/du.sGTNzIYFYjPYlsa1uXLP54JcVEAKhbdw3.p6qGbce7Nzr9yW', 'Bernard', 'Sophie', '1992-07-03'),
+('j.d@e.com', '$2a$10$K/du.sGTNzIYFYjPYlsa1uXLP54JcVEAKhbdw3.p6qGbce7Nzr9yW', 'Dupont', 'Jean', '1990-04-14');
 
 
 
