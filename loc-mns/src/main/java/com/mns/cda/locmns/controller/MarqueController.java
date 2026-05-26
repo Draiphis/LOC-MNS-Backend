@@ -1,10 +1,13 @@
 package com.mns.cda.locmns.controller;
 
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.locmns.dto.CreateMarqueDto;
 import com.mns.cda.locmns.dto.UpdateMarqueDto;
 import com.mns.cda.locmns.model.Marque;
 import com.mns.cda.locmns.service.MarqueService;
+import com.mns.cda.locmns.view.MarqueView;
+import com.mns.cda.locmns.view.ModeleView;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,11 +27,13 @@ public class MarqueController {
     private final MarqueService service;
 
     @GetMapping("/list")
+    @JsonView(MarqueView.class )
     public List<Marque> getAll() {
         return service.getAll();
     }
 
     @GetMapping("/{id}")
+    @JsonView(MarqueView.class )
     public ResponseEntity<Marque> get(@PathVariable int id) {
         return ResponseEntity.ok(service.getById(id));
     }

@@ -79,18 +79,44 @@ public class ModeleService {
                 .map(modele -> Map.entry(modele, calculerStockDisponible(modele)));
     }
 
-    public List<CatalogueModeleDto> getCatalogue(boolean filtre) {
+
+    public List<CatalogueModeleDto> getCatalogue(
+            String type,
+            String marque,
+            Boolean disponible
+    ) {
 
         return getModelDisponible()
-                .filter(entry -> entry.getValue() > 0)
-                .map(entry -> toCatalogueDto(entry.getKey(), entry.getValue()))
-                .toList();
-    }
+                .filter(entry -> {
+                    Modele modele = entry.getKey();
+                    if (type != null &&
+                            !modele.getType().getNom().equals(type)) {
+                        return false;
+                    }
+                    return true;
+                })
+                .filter(entry -> {
+                    Modele modele = entry.getKey();
+                    if (marque != null &&
+                            !modele.getMarque().getNom().equals(marque)) {
+                        return false;
+                    }
 
-    public List<CatalogueModeleDto> getCatalogue() {
+                    return true;
+                })
 
-        return getModelDisponible()
-                .map(entry -> toCatalogueDto(entry.getKey(), entry.getValue()))
+                .filter(entry -> {
+                    if (Boolean.TRUE.equals(disponible)) {
+                        return entry.getValue() > 0;
+                    }
+                    return true;
+                })
+                .map(entry ->
+                        toCatalogueDto(
+                                entry.getKey(),
+                                entry.getValue()
+                        )
+                )
                 .toList();
     }
 

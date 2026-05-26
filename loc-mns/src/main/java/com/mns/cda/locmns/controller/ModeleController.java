@@ -35,15 +35,14 @@ public class ModeleController {
 
     @GetMapping("/list")
     @IsUser
-    public List<CatalogueModeleDto> getAll() {
-        return service.getCatalogue();
+    public List<CatalogueModeleDto> getAll(
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String marque,
+            @RequestParam(required = false) Boolean disponible
+    ) {
+        return service.getCatalogue(type,marque,disponible);
     }
 
-    @GetMapping("/list-filtrer")
-    @IsUser
-    public List<CatalogueModeleDto> getAllFiltrer() {
-        return service.getCatalogue(true);
-    }
 
     @GetMapping("/{id}")
     @JsonView(ModeleView.class )
