@@ -2,6 +2,7 @@ package com.mns.cda.locmns.controller;
 
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.mns.cda.locmns.dto.CatalogueModeleDto;
 import com.mns.cda.locmns.dto.CreateModeleDto;
 import com.mns.cda.locmns.dto.UpdateModeleDto;
 import com.mns.cda.locmns.model.Modele;
@@ -33,10 +34,9 @@ public class ModeleController {
     private final ModeleService service;
 
     @GetMapping("/list")
-    @JsonView(ModeleView.class )
     @IsUser
-    public List<Modele> getAll() {
-        return service.getAll();
+    public List<CatalogueModeleDto> getAll() {
+        return service.getCatalogue();
     }
 
     @GetMapping("/{id}")

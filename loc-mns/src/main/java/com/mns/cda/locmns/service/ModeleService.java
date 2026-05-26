@@ -1,6 +1,7 @@
 package com.mns.cda.locmns.service;
 
 import com.mns.cda.locmns.dao.ModeleDao;
+import com.mns.cda.locmns.dto.CatalogueModeleDto;
 import com.mns.cda.locmns.dto.CreateModeleDto;
 import com.mns.cda.locmns.dto.UpdateModeleDto;
 import com.mns.cda.locmns.model.Modele;
@@ -10,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -63,5 +66,33 @@ public class ModeleService {
                 .stream()
                 .filter(materielService::estDisponible)
                 .count();
+    }
+
+
+    public List<CatalogueModeleDto> getCatalogue() {
+
+        return modeleDao.findAll()
+                .stream()
+                .map(modele -> {
+
+                    int stock =
+                            calculerStockDisponible(modele);
+
+                    CatalogueModeleDto dto =
+                            new CatalogueModeleDto();
+
+                    dto.setId(modele.getId());
+                    dto.setNom(modele.getNom());
+                    dto.setDescription(modele.getDescription());
+                    dto.setImage(modele.getImage());
+
+                    dto.setStockDisponible(stock);
+
+                    dto.setEstDisponible(stock > 0);
+
+                    return dto;
+
+                })
+                .toList();
     }
 }

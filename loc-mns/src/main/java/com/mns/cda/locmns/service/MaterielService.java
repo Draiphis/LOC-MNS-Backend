@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 @RequiredArgsConstructor
 public class MaterielService {
@@ -72,8 +74,10 @@ public class MaterielService {
 
         return materiel.getEmprunts()
                 .stream()
-                .noneMatch(
-                        emprunt -> emprunt.getDateRetourEmpruntReelle() == null
+                .noneMatch(e ->
+                        e.getDateDebutEmprunt().isBefore(LocalDate.now().plusDays(1))
+                                &&
+                                e.getDateRetourEmpruntPrevisionelle().isAfter(LocalDate.now().minusDays(1))
                 );
     }
 }
