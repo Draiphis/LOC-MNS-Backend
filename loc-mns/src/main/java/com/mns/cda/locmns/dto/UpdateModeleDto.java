@@ -14,4 +14,7 @@ public class UpdateModeleDto {
     @NotBlank
     private String description;
 
+    @NotBlank
+    private String image;
+
 }
