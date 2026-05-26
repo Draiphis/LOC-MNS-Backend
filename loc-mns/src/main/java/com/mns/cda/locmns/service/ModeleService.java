@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ModeleService {
     private final ModeleDao modeleDao;
+    private final MaterielService materielService;
 
     // CREATE
     public Modele create(CreateModeleDto dto) {
@@ -54,5 +55,13 @@ public class ModeleService {
     // GET ALL
     public java.util.List<Modele> getAll() {
         return modeleDao.findAll();
+    }
+
+    public int calculerStockDisponible(Modele modele) {
+
+        return (int) modele.getMateriaux()
+                .stream()
+                .filter(materielService::estDisponible)
+                .count();
     }
 }

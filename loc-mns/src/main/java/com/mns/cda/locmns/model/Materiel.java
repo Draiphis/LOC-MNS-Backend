@@ -40,4 +40,7 @@ public class Materiel {
 
     @OneToMany(mappedBy = "materiel")
     private Set<Documentation> documents;
+
+    @OneToMany(mappedBy = "materiel")
+    private Set<EtatMateriel> etats;
 }

@@ -3,13 +3,20 @@ package com.mns.cda.locmns.service;
 import com.mns.cda.locmns.dao.MaterielDao;
 import com.mns.cda.locmns.dto.CreateMaterielDto;
 import com.mns.cda.locmns.dto.UpdateMaterielDto;
+import com.mns.cda.locmns.model.Etat;
+import com.mns.cda.locmns.model.EtatUsure;
 import com.mns.cda.locmns.model.Materiel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class MaterielService {
+
+
+    private final EtatMaterielService etatMaterielService;
+
     private final MaterielDao materielDao;
 
     // CREATE
@@ -48,5 +55,25 @@ public class MaterielService {
     // GET ALL
     public java.util.List<Materiel> getAll() {
         return materielDao.findAll();
+    }
+
+    public boolean estDisponible(Materiel materiel) {
+
+        Etat etatActuel =
+                etatMaterielService.getEtatActuel(materiel);
+
+        if (
+                etatActuel != null
+                        &&
+                        etatActuel.getUsure() == EtatUsure.HORS_SERVICE
+        ) {
+            return false;
+        }
+
+        return materiel.getEmprunts()
+                .stream()
+                .noneMatch(
+                        emprunt -> emprunt.getDateRetourEmpruntReelle() == null
+                );
     }
 }
