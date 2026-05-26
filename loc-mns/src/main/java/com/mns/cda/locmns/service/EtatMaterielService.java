@@ -18,7 +18,7 @@ public class EtatMaterielService {
 
     public Etat getEtatActuel(Materiel materiel) {
 
-        return materiel.getEtat()
+        return materiel.getEtats()
                 .stream()
                 .max(Comparator.comparing(
                         EtatMateriel::getDateModificationEtat
