@@ -14,4 +14,7 @@ public class CreateModeleDto {
     @NotBlank
     private String description;
 
+    @NotBlank
+    private String image;
+
 }
