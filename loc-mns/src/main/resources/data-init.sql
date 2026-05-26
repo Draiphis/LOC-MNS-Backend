@@ -1,5 +1,14 @@
 --password = rootroot
 
+INSERT INTO etat (usure)
+VALUES
+    ('NEUF'),
+    ('TRES_BON_ETAT'),
+    ('BON_ETAT'),
+    ('USURE_VISIBLE'),
+    ('MAUVAIS_ETAT'),
+    ('HORS_SERVICE');
+
 INSERT INTO utilisateur (email, password, nom, prenom, date_de_naissance)
 VALUES
     ('jean.dupont@example.com', '$2a$10$K/du.sGTNzIYFYjPYlsa1uXLP54JcVEAKhbdw3.p6qGbce7Nzr9yW', 'Dupont', 'Jean', '1990-05-14'),
@@ -204,4 +213,22 @@ VALUES
     ('PC-002', 1),
     ('TAB-001', 2),
     ('SALLE-203', 3),
-    ('BOOK-CC-001', 4);
+    ('BOOK-CC-001', 12);
+
+INSERT INTO etat_materiel (etat_id, materiel_id, date_modification_etat)
+VALUES
+
+-- PC-001 NEUF
+(1, 1, NOW()),
+
+-- PC-002 BON ETAT
+(3, 2, NOW()),
+
+-- TAB-001 TRES BON ETAT
+(2, 3, NOW()),
+
+-- SALLE-203 USURE
+(4, 4, NOW()),
+
+-- BOOK-CC-001 MAUVAIS ETAT
+(5, 5, NOW());
