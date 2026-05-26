@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -40,5 +41,5 @@ public class Type {
     private Set<Role> rolesAutorises;
 
     @OneToMany(mappedBy = "type")
-    private Set<Modele> modeles;
+    private List<Modele> modeles;
 }
