@@ -39,6 +39,12 @@ public class ModeleController {
         return service.getCatalogue();
     }
 
+    @GetMapping("/list-filtrer")
+    @IsUser
+    public List<CatalogueModeleDto> getAllFiltrer() {
+        return service.getCatalogue(true);
+    }
+
     @GetMapping("/{id}")
     @JsonView(ModeleView.class )
     @IsUser

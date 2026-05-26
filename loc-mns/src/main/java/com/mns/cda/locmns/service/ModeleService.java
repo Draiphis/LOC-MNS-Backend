@@ -13,6 +13,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -69,30 +72,39 @@ public class ModeleService {
     }
 
 
-    public List<CatalogueModeleDto> getCatalogue() {
+    public Stream<Map.Entry<Modele, Integer>> getModelDisponible() {
 
         return modeleDao.findAll()
                 .stream()
-                .map(modele -> {
+                .map(modele -> Map.entry(modele, calculerStockDisponible(modele)));
+    }
 
-                    int stock =
-                            calculerStockDisponible(modele);
+    public List<CatalogueModeleDto> getCatalogue(boolean filtre) {
 
-                    CatalogueModeleDto dto =
-                            new CatalogueModeleDto();
-
-                    dto.setId(modele.getId());
-                    dto.setNom(modele.getNom());
-                    dto.setDescription(modele.getDescription());
-                    dto.setImage(modele.getImage());
-
-                    dto.setStockDisponible(stock);
-
-                    dto.setEstDisponible(stock > 0);
-
-                    return dto;
-
-                })
+        return getModelDisponible()
+                .filter(entry -> entry.getValue() > 0)
+                .map(entry -> toCatalogueDto(entry.getKey(), entry.getValue()))
                 .toList();
+    }
+
+    public List<CatalogueModeleDto> getCatalogue() {
+
+        return getModelDisponible()
+                .map(entry -> toCatalogueDto(entry.getKey(), entry.getValue()))
+                .toList();
+    }
+
+    private CatalogueModeleDto toCatalogueDto(Modele modele, int stock) {
+
+        CatalogueModeleDto dto = new CatalogueModeleDto();
+
+        dto.setId(modele.getId());
+        dto.setNom(modele.getNom());
+        dto.setDescription(modele.getDescription());
+        dto.setImage(modele.getImage());
+        dto.setStockDisponible(stock);
+        dto.setEstDisponible(stock > 0);
+
+        return dto;
     }
 }
