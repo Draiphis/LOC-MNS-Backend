@@ -8,6 +8,7 @@ import com.mns.cda.locmns.service.UtilisateurService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -26,6 +27,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @CrossOrigin
 public class AuthentificationController {
+
+    @Value("${jwt.secret}")
+    private String jwtSecret;
 
     private final UtilisateurService utilisateurService;
     private final AuthenticationProvider authenticationProvider;
@@ -52,7 +56,7 @@ public class AuthentificationController {
                     .setSubject(utilisateur.getEmail())
                     .addClaims(Map.of("roles", utilisateurDetails.getUtilisateur().getRoles().stream()
                             .map(r->r.getRole().name()).collect(Collectors.joining(", "))))
-                    .signWith(SignatureAlgorithm.HS256, "azerty")
+                    .signWith(SignatureAlgorithm.HS256, jwtSecret)
                     .compact();
             return new ResponseEntity<>(jwt, HttpStatus.OK);
 
