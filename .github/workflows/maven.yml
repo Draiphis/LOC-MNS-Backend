@@ -34,8 +34,14 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
+    - name: Extract with Maven
+      run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+
     - name: Build docker image
       run: docker build -t draifis/loc-mns-back .
+
+    - name: Tag image with version from pom.xml
+      run: docker tag draifis/loc-mns-back draifis/loc-mns-back:${{env.VERSION}}
 
     - name: Log in to Docker Hub
       uses: docker/login-action@v4
@@ -45,4 +51,7 @@ jobs:
 
     - name: Push docker image
       run: docker push draifis/loc-mns-back
+
+    - name: Push docker image with version
+      run: docker push draifis/loc-mns-back:${{env.VERSION}}
 
