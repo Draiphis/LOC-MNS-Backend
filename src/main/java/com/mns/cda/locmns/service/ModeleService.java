@@ -65,10 +65,7 @@ public class ModeleService {
 
     public int calculerStockDisponible(Modele modele) {
 
-        return (int) modele.getMateriaux()
-                .stream()
-                .filter(materielService::estDisponible)
-                .count();
+        return modeleDao.calculerNonHsStockDisponible(modele.getId());
     }
 
 
