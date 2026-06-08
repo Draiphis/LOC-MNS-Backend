@@ -33,14 +33,6 @@ AND NOT EXISTS (
     int calculerNonHsStockDisponible(Integer modeleId);
 
     @Query(value = """
-WITH dernier_etat AS (
-    SELECT DISTINCT ON (em.materiel_id)
-        em.materiel_id,
-        e.usure
-    FROM etat_materiel em
-    JOIN etat e ON e.id = em.etat_id
-    ORDER BY em.materiel_id, em.date_modification_etat DESC
-)
 SELECT
     mo.id,
     mo.nom,
@@ -48,13 +40,28 @@ SELECT
     mo.image,
 
     COUNT(mat.id) FILTER (
-        WHERE de.usure <> 'HORS_SERVICE'
+        WHERE NOT EXISTS (
+            SELECT 1
+            FROM emprunt e
+            WHERE e.materiel_id = mat.id
+              AND e.date_retour_emprunt_reelle IS NULL
+        )
+        AND NOT EXISTS (
+            SELECT 1
+            FROM etat_materiel em
+            JOIN etat et ON et.id = em.etat_id
+            WHERE em.materiel_id = mat.id
+              AND em.date_modification_etat = (
+                  SELECT MAX(em2.date_modification_etat)
+                  FROM etat_materiel em2
+                  WHERE em2.materiel_id = mat.id
+              )
+              AND et.usure = 'HORS_SERVICE'
+        )
     ) AS stockDisponible
 
 FROM modele mo
-
 LEFT JOIN materiel mat ON mat.modele_id = mo.id
-LEFT JOIN dernier_etat de ON de.materiel_id = mat.id
 
 JOIN type t ON t.id = mo.type_id
 JOIN marque ma ON ma.id = mo.marque_id
@@ -68,7 +75,24 @@ HAVING (
     :disponible IS NULL
     OR :disponible = FALSE
     OR COUNT(mat.id) FILTER (
-        WHERE de.usure <> 'HORS_SERVICE'
+        WHERE NOT EXISTS (
+            SELECT 1
+            FROM emprunt e
+            WHERE e.materiel_id = mat.id
+              AND e.date_retour_emprunt_reelle IS NULL
+        )
+        AND NOT EXISTS (
+            SELECT 1
+            FROM etat_materiel em
+            JOIN etat et ON et.id = em.etat_id
+            WHERE em.materiel_id = mat.id
+              AND em.date_modification_etat = (
+                  SELECT MAX(em2.date_modification_etat)
+                  FROM etat_materiel em2
+                  WHERE em2.materiel_id = mat.id
+              )
+              AND et.usure = 'HORS_SERVICE'
+        )
     ) > 0
 )
 """, nativeQuery = true)

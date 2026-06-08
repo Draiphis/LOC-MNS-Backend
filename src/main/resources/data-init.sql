@@ -213,7 +213,8 @@ VALUES
     ('PC-002', 1),
     ('TAB-001', 2),
     ('SALLE-203', 3),
-    ('BOOK-CC-001', 12);
+    ('BOOK-CC-001', 12),
+    ('BOOK-CC-002', 12);
 
 INSERT INTO etat_materiel (etat_id, materiel_id, date_modification_etat)
 VALUES
@@ -231,4 +232,30 @@ VALUES
 (4, 4, NOW()),
 
 -- BOOK-CC-001 MAUVAIS ETAT
-(5, 5, NOW());
+(5, 5, NOW()),
+-- BOOK-CC-002 BON ETAT
+(3, 6, NOW());
+
+INSERT INTO emprunt (
+    date_debut_emprunt,
+    date_retour_emprunt_previsionelle,
+    date_retour_emprunt_reelle,
+    materiel_id,
+    demandeur_id,
+    validateur_id
+)
+VALUES
+-- 1. Emprunt en cours (PC-001)
+('2026-06-10', '2026-06-20', NULL, 1, 1, 1),
+
+-- 2. Emprunt terminé (PC-002)
+('2026-05-12', '2026-05-18', '2026-05-17', 2, 2, 1),
+
+-- 3. Emprunt en cours (TAB-001)
+('2026-06-15', '2026-06-25', NULL, 3, 3, 1),
+
+-- 4. Emprunt très récent (SALLE-203)
+('2026-06-08', '2026-06-09', NULL, 2, 1, 1),
+
+-- 5. Emprunt terminé (BOOK-CC-001)
+('2026-06-11', '2026-05-30', '2026-05-29', 1, 2, 1);

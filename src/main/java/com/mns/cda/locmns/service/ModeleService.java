@@ -79,10 +79,10 @@ public class ModeleService {
                     dto.setNom(sql.getNom());
                     dto.setDescription(sql.getDescription());
                     dto.setImage(sql.getImage());
-                    dto.setStockDisponible(sql.getStockDisponible().intValue());
+                    dto.setStockDisponible(materielService.getStockDisponible(sql.getId()));
 
-                    dto.setEstDisponible(sql.getStockDisponible() != null
-                            && sql.getStockDisponible() > 0);
+                    dto.setEstDisponible(
+                             materielService.getStockDisponible(sql.getId()) > 0);
 
                     return dto;
                 })

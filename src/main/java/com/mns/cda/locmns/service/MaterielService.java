@@ -59,25 +59,14 @@ public class MaterielService {
         return materielDao.findAll();
     }
 
-    public boolean estDisponible(Materiel materiel) {
+    public boolean estDisponible(Integer modeleId) {
+        return materielDao.auMoinsUnMaterielDisponible(modeleId);
 
-        Etat etatActuel =
-                etatMaterielService.getEtatActuel(materiel);
-
-        if (
-                etatActuel != null
-                        &&
-                        etatActuel.getUsure() == EtatUsure.HORS_SERVICE
-        ) {
-            return false;
-        }
-
-        return materiel.getEmprunts()
-                .stream()
-                .noneMatch(e ->
-                        e.getDateDebutEmprunt().isBefore(LocalDate.now().plusDays(1))
-                                &&
-                                e.getDateRetourEmpruntPrevisionelle().isAfter(LocalDate.now().minusDays(1))
-                );
     }
+
+    public long getStockDisponible(Integer modeleId) {
+        return materielDao.stockDisponibleParModeleId(modeleId);
+    }
+
+
 }

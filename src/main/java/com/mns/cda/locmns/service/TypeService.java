@@ -2,10 +2,13 @@ package com.mns.cda.locmns.service;
 
 import com.mns.cda.locmns.dao.TypeDao;
 import com.mns.cda.locmns.dto.CreateTypeDto;
+import com.mns.cda.locmns.dto.StockParTypeDto;
 import com.mns.cda.locmns.dto.UpdateTypeDto;
 import com.mns.cda.locmns.model.Type;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -48,5 +51,9 @@ public class TypeService {
     // GET ALL
     public java.util.List<Type> getAll() {
         return typeDao.findAll();
+    }
+
+    public List<StockParTypeDto> getStockParType() {
+        return typeDao.getNbModelesEnStockParType();
     }
 }

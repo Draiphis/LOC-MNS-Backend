@@ -3,6 +3,7 @@ package com.mns.cda.locmns.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.locmns.dto.CreateTypeDto;
+import com.mns.cda.locmns.dto.StockParTypeDto;
 import com.mns.cda.locmns.dto.UpdateTypeDto;
 import com.mns.cda.locmns.model.Type;
 import com.mns.cda.locmns.service.TypeService;
@@ -29,6 +30,11 @@ public class TypeController {
     @JsonView(TypeView.class )
     public List<Type> getAll() {
         return service.getAll();
+    }
+
+    @GetMapping("/stock")
+    public ResponseEntity<List<StockParTypeDto>> getStockParType() {
+        return ResponseEntity.ok(service.getStockParType());
     }
 
     @GetMapping("/{id}")
