@@ -2,6 +2,7 @@ package com.mns.cda.locmns.service;
 
 import com.mns.cda.locmns.dao.ModeleDao;
 import com.mns.cda.locmns.dto.CatalogueModeleDto;
+import com.mns.cda.locmns.dto.CatalogueSqlModeleDto;
 import com.mns.cda.locmns.dto.CreateModeleDto;
 import com.mns.cda.locmns.dto.UpdateModeleDto;
 import com.mns.cda.locmns.model.Modele;
@@ -63,71 +64,30 @@ public class ModeleService {
         return modeleDao.findAll();
     }
 
-    public int calculerStockDisponible(Modele modele) {
-
-        return modeleDao.calculerNonHsStockDisponible(modele.getId());
-    }
-
-
-    public Stream<Map.Entry<Modele, Integer>> getModelDisponible() {
-
-        return modeleDao.findAll()
-                .stream()
-                .map(modele -> Map.entry(modele, calculerStockDisponible(modele)));
-    }
-
-
     public List<CatalogueModeleDto> getCatalogue(
             String type,
             String marque,
             Boolean disponible
     ) {
 
-        return getModelDisponible()
-                .filter(entry -> {
-                    Modele modele = entry.getKey();
-                    if (type != null &&
-                            !modele.getType().getNom().equals(type)) {
-                        return false;
-                    }
-                    return true;
-                })
-                .filter(entry -> {
-                    Modele modele = entry.getKey();
-                    if (marque != null &&
-                            !modele.getMarque().getNom().equals(marque)) {
-                        return false;
-                    }
+        return modeleDao.getCatalogue(type, marque, disponible)
+                .stream()
+                .map(sql -> {
+                    CatalogueModeleDto dto = new CatalogueModeleDto();
 
-                    return true;
-                })
+                    dto.setId(sql.getId());
+                    dto.setNom(sql.getNom());
+                    dto.setDescription(sql.getDescription());
+                    dto.setImage(sql.getImage());
+                    dto.setStockDisponible(sql.getStockDisponible().intValue());
 
-                .filter(entry -> {
-                    if (Boolean.TRUE.equals(disponible)) {
-                        return entry.getValue() > 0;
-                    }
-                    return true;
+                    dto.setEstDisponible(sql.getStockDisponible() != null
+                            && sql.getStockDisponible() > 0);
+
+                    return dto;
                 })
-                .map(entry ->
-                        toCatalogueDto(
-                                entry.getKey(),
-                                entry.getValue()
-                        )
-                )
                 .toList();
     }
 
-    private CatalogueModeleDto toCatalogueDto(Modele modele, int stock) {
 
-        CatalogueModeleDto dto = new CatalogueModeleDto();
-
-        dto.setId(modele.getId());
-        dto.setNom(modele.getNom());
-        dto.setDescription(modele.getDescription());
-        dto.setImage(modele.getImage());
-        dto.setStockDisponible(stock);
-        dto.setEstDisponible(stock > 0);
-
-        return dto;
-    }
 }

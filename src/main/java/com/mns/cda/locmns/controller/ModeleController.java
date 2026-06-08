@@ -3,6 +3,7 @@ package com.mns.cda.locmns.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.locmns.dto.CatalogueModeleDto;
+import com.mns.cda.locmns.dto.CatalogueSqlModeleDto;
 import com.mns.cda.locmns.dto.CreateModeleDto;
 import com.mns.cda.locmns.dto.UpdateModeleDto;
 import com.mns.cda.locmns.model.Modele;

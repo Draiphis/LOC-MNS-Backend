@@ -1,16 +1,18 @@
 package com.mns.cda.locmns.dto;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
-public class CatalogueModeleDto {
+@NoArgsConstructor
+@AllArgsConstructor
+public class CatalogueSqlModeleDto {
 
     private Integer id;
 
@@ -23,8 +25,7 @@ public class CatalogueModeleDto {
     @NotBlank
     private String image;
 
-    private int stockDisponible;
+    private Long stockDisponible;
 
-    private boolean estDisponible;
 
 }
