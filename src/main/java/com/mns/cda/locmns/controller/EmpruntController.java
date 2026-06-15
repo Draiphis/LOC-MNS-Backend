@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -34,10 +35,16 @@ public class EmpruntController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Emprunt> create(
-            @RequestBody @Valid CreateEmpruntDto dto) {
+    public ResponseEntity<Map<String, Object>> create(@RequestBody @Valid CreateEmpruntDto dto) {
 
-        return new ResponseEntity<>(service.create(dto), HttpStatus.CREATED);
+        Emprunt emprunt = service.create(dto);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Map.of(
+                        "id", emprunt.getId(),
+                        "status", "created"
+                )
+        );
     }
 
     @PutMapping("/modify/{id}")

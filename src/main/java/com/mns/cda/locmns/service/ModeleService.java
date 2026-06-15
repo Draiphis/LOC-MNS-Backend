@@ -73,16 +73,17 @@ public class ModeleService {
         return modeleDao.getCatalogue(type, marque, disponible)
                 .stream()
                 .map(sql -> {
-                    CatalogueModeleDto dto = new CatalogueModeleDto();
 
+                    long stock = modeleDao.compteStockDisponible(sql.getId());
+
+                    CatalogueModeleDto dto = new CatalogueModeleDto();
                     dto.setId(sql.getId());
                     dto.setNom(sql.getNom());
                     dto.setDescription(sql.getDescription());
                     dto.setImage(sql.getImage());
-                    dto.setStockDisponible(materielService.getStockDisponible(sql.getId()));
 
-                    dto.setEstDisponible(
-                             materielService.getStockDisponible(sql.getId()) > 0);
+                    dto.setStockDisponible(stock);
+                    dto.setEstDisponible(stock > 0);
 
                     return dto;
                 })

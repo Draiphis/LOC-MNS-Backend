@@ -7,10 +7,13 @@ import com.mns.cda.locmns.dto.CreateEmpruntDto;
 import com.mns.cda.locmns.dto.UpdateEmpruntDto;
 import com.mns.cda.locmns.model.Emprunt;
 import com.mns.cda.locmns.model.Materiel;
+import com.mns.cda.locmns.model.StatutEmprunt;
 import com.mns.cda.locmns.model.Utilisateur;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,26 +24,28 @@ public class EmpruntService {
 
     public Emprunt create(CreateEmpruntDto dto) {
 
-        String email = SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getName();
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
+        System.out.println("modeleId reçu = " + dto.getModeleId());
 
         Utilisateur utilisateur = utilisateurDao.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
 
-        Materiel materiel = materielDao.findById(dto.getMaterielId())
-                .orElseThrow(() -> new RuntimeException("Matériel introuvable"));
 
+
+        // récupérer un matériel libre (même si rare cas concurrent)
+        Materiel materiel = materielDao.findDisponiblesByModeleId(dto.getModeleId())
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Aucun matériel trouvé"));
 
         Emprunt emprunt = new Emprunt();
-
-        emprunt.setDateDebutEmprunt(dto.getDateDebutEmprunt());
-        emprunt.setDateRetourEmpruntPrevisionelle(dto.getDateRetourEmpruntPrevisionelle());
-
         emprunt.setMateriel(materiel);
         emprunt.setDemandeur(utilisateur);
+        emprunt.setDateDebutEmprunt(dto.getDateDebutEmprunt());
+        emprunt.setDateRetourEmpruntPrevisionelle(dto.getDateRetourEmpruntPrevisionelle());
+        emprunt.setStatut(StatutEmprunt.EN_ATTENTE);
+
 
         return empruntDao.save(emprunt);
     }

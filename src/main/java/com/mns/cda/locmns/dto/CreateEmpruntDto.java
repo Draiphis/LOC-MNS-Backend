@@ -22,7 +22,7 @@ public class CreateEmpruntDto {
     protected LocalDate dateRetourEmpruntPrevisionelle;
 
     @NotNull
-    private Integer materielId;
+    private Integer modeleId;
 
 
 }

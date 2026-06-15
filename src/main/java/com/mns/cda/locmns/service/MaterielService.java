@@ -2,6 +2,7 @@ package com.mns.cda.locmns.service;
 
 import com.mns.cda.locmns.dao.MaterielDao;
 import com.mns.cda.locmns.dto.CreateMaterielDto;
+import com.mns.cda.locmns.dto.MaterielDisponibleDto;
 import com.mns.cda.locmns.dto.UpdateMaterielDto;
 import com.mns.cda.locmns.model.Etat;
 import com.mns.cda.locmns.model.EtatUsure;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -66,6 +68,24 @@ public class MaterielService {
 
     public long getStockDisponible(Integer modeleId) {
         return materielDao.stockDisponibleParModeleId(modeleId);
+    }
+
+    public List<MaterielDisponibleDto> getDisponibles(Integer modeleId) {
+
+        return materielDao.findDisponiblesByModeleId(modeleId)
+                .stream()
+                .map(m -> {
+                    MaterielDisponibleDto dto = new MaterielDisponibleDto();
+
+                    dto.setId(m.getId());
+                    dto.setReference(m.getReference());
+
+                    dto.setModeleId(m.getModele().getId());
+                    dto.setModeleNom(m.getModele().getNom());
+
+                    return dto;
+                })
+                .toList();
     }
 
 

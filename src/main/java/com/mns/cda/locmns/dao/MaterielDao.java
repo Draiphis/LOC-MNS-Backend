@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface MaterielDao extends JpaRepository<Materiel, Integer> {
 
@@ -43,5 +45,19 @@ public interface MaterielDao extends JpaRepository<Materiel, Integer> {
         )
     """, nativeQuery = true)
     long stockDisponibleParModeleId(int modeleId);
+
+    @Query("""
+SELECT m
+FROM Materiel m
+WHERE m.modele.id = :modeleId
+AND NOT EXISTS (
+    SELECT 1
+    FROM Emprunt e
+    WHERE e.materiel.id = m.id
+    AND e.dateRetourEmpruntReelle IS NULL
+    AND e.dateDebutEmprunt <= CURRENT_DATE
+)
+""")
+    List<Materiel> findDisponiblesByModeleId(Integer modeleId);
 }
 

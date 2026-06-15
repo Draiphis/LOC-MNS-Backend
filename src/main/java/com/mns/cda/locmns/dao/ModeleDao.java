@@ -13,24 +13,18 @@ import java.util.List;
 @Repository
 public interface ModeleDao extends JpaRepository<Modele, Integer> {
 
-    @Query("""
-
-            SELECT COUNT(m)
-FROM Materiel m
-WHERE m.modele.id = :modeleId
-AND NOT EXISTS (
-    SELECT em
-    FROM EtatMateriel em
-    WHERE em.materiel = m
-    AND em.dateModificationEtat = (
-        SELECT MAX(em2.dateModificationEtat)
-        FROM EtatMateriel em2
-        WHERE em2.materiel = m
+    @Query(value = """
+    SELECT COUNT(m.id)
+    FROM materiel m
+    WHERE m.modele_id = :modeleId
+    AND NOT EXISTS (
+        SELECT 1
+        FROM emprunt e
+        WHERE e.materiel_id = m.id
+        AND e.date_retour_emprunt_reelle IS NULL
     )
-    AND em.etat.usure = com.mns.cda.locmns.model.EtatUsure.HORS_SERVICE
-)
-""")
-    int calculerNonHsStockDisponible(Integer modeleId);
+""", nativeQuery = true)
+    long compteStockDisponible(Integer modeleId);
 
     @Query(value = """
 SELECT

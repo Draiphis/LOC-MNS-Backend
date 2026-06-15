@@ -211,8 +211,8 @@ INSERT INTO materiel (reference, modele_id)
 VALUES
     ('PC-001', 1),
     ('PC-002', 1),
-    ('TAB-001', 2),
-    ('SALLE-203', 3),
+    ('MAC-001', 2),
+    ('DELL-001', 3),
     ('BOOK-CC-001', 12),
     ('BOOK-CC-002', 12);
 
@@ -242,20 +242,21 @@ INSERT INTO emprunt (
     date_retour_emprunt_reelle,
     materiel_id,
     demandeur_id,
-    validateur_id
+    validateur_id,
+    statut
 )
 VALUES
 -- 1. Emprunt en cours (PC-001)
-('2026-06-10', '2026-06-20', NULL, 1, 1, 1),
+('2026-06-10', '2026-06-20', NULL, 1, 1, 1,'APPROUVE'),
 
 -- 2. Emprunt terminé (PC-002)
-('2026-05-12', '2026-05-18', '2026-05-17', 2, 2, 1),
+('2026-05-12', '2026-05-18', '2026-05-17', 2, 2, 1,'APPROUVE'),
 
 -- 3. Emprunt en cours (TAB-001)
-('2026-06-15', '2026-06-25', NULL, 3, 3, 1),
+('2026-06-15', '2026-06-25', NULL, 3, 3, 1,'APPROUVE'),
 
 -- 4. Emprunt très récent (SALLE-203)
-('2026-06-08', '2026-06-09', NULL, 2, 1, 1),
+('2026-06-08', '2026-06-09', NULL, 2, 1, 1,'APPROUVE'),
 
 -- 5. Emprunt terminé (BOOK-CC-001)
-('2026-06-11', '2026-05-30', '2026-05-29', 1, 2, 1);
+('2026-06-11', '2026-05-30', '2026-05-29', 1, 2, 1,'APPROUVE');

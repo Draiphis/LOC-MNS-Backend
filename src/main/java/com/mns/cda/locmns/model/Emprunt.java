@@ -41,6 +41,9 @@ public class Emprunt {
     @FutureOrPresent
     protected LocalDate dateRetourEmpruntReelle;
 
+    @Enumerated(EnumType.STRING)
+    private StatutEmprunt statut;
+
     @ManyToOne
     @JoinColumn(name = "materiel_id") // FK en base
     private Materiel materiel;

@@ -3,6 +3,7 @@ package com.mns.cda.locmns.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.locmns.dto.CreateMaterielDto;
+import com.mns.cda.locmns.dto.MaterielDisponibleDto;
 import com.mns.cda.locmns.dto.UpdateMaterielDto;
 import com.mns.cda.locmns.model.Materiel;
 import com.mns.cda.locmns.service.MaterielService;
@@ -29,6 +30,11 @@ public class MaterielController {
     @JsonView(MaterielView.class )
     public List<Materiel> getAll() {
         return service.getAll();
+    }
+
+    @GetMapping("/disponibles/{modeleId}")
+    public List<MaterielDisponibleDto> getDisponibles(@PathVariable int modeleId) {
+        return service.getDisponibles(modeleId);
     }
 
     @GetMapping("/{id}")
