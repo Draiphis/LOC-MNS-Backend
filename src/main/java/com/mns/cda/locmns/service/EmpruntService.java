@@ -1,26 +1,48 @@
 package com.mns.cda.locmns.service;
 
 import com.mns.cda.locmns.dao.EmpruntDao;
+import com.mns.cda.locmns.dao.MaterielDao;
+import com.mns.cda.locmns.dao.UtilisateurDao;
 import com.mns.cda.locmns.dto.CreateEmpruntDto;
 import com.mns.cda.locmns.dto.UpdateEmpruntDto;
 import com.mns.cda.locmns.model.Emprunt;
+import com.mns.cda.locmns.model.Materiel;
+import com.mns.cda.locmns.model.Utilisateur;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class EmpruntService {
     private final EmpruntDao empruntDao;
+    private final MaterielDao materielDao;
+    private final UtilisateurDao utilisateurDao;
 
-    // CREATE
     public Emprunt create(CreateEmpruntDto dto) {
-        Emprunt u = new Emprunt();
-        
-        u.setDateDebutEmprunt(dto.getDateDebutEmprunt());
-        u.setDateRetourEmpruntPrevisionelle(dto.getDateRetourEmpruntPrevisionelle());
-        
 
-        return empruntDao.save(u);
+        String email = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
+
+        Utilisateur utilisateur = utilisateurDao.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+
+        Materiel materiel = materielDao.findById(dto.getMaterielId())
+                .orElseThrow(() -> new RuntimeException("Matériel introuvable"));
+
+
+        Emprunt emprunt = new Emprunt();
+
+        emprunt.setDateDebutEmprunt(dto.getDateDebutEmprunt());
+        emprunt.setDateRetourEmpruntPrevisionelle(dto.getDateRetourEmpruntPrevisionelle());
+
+        emprunt.setMateriel(materiel);
+        emprunt.setDemandeur(utilisateur);
+
+        return empruntDao.save(emprunt);
     }
 
     // UPDATE (PUT)

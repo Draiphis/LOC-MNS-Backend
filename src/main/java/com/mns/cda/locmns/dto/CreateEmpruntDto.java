@@ -21,6 +21,8 @@ public class CreateEmpruntDto {
     @NotNull
     protected LocalDate dateRetourEmpruntPrevisionelle;
 
+    @NotNull
+    private Integer materielId;
 
 
 }

@@ -17,4 +17,5 @@ public interface UtilisateurDao extends JpaRepository<Utilisateur, Integer> {
     @Query("SELECT u FROM Utilisateur u LEFT JOIN FETCH u.roles WHERE u.email = :email ")
     Optional<Utilisateur> findByEmailWithRoles (@Param("email") String email);
 
+    String email(String email);
 }
