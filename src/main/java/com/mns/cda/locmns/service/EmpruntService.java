@@ -24,6 +24,16 @@ public class EmpruntService {
 
     public Emprunt create(CreateEmpruntDto dto) {
 
+        if (dto.getDateDebutEmprunt() == null || dto.getDateRetourEmpruntPrevisionelle() == null) {
+            throw new IllegalArgumentException("Les dates de début et de retour sont obligatoires.");
+        }
+
+        if (!dto.getDateDebutEmprunt().isBefore(dto.getDateRetourEmpruntPrevisionelle())) {
+            throw new IllegalArgumentException(
+                    "La date de début d'emprunt doit être antérieure à la date de retour prévisionnelle."
+            );
+        }
+
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
         System.out.println("modeleId reçu = " + dto.getModeleId());
