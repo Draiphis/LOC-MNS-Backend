@@ -5,6 +5,8 @@ import com.mns.cda.locmns.dao.MaterielDao;
 import com.mns.cda.locmns.dao.UtilisateurDao;
 import com.mns.cda.locmns.dto.CreateEmpruntDto;
 import com.mns.cda.locmns.dto.UpdateEmpruntDto;
+import com.mns.cda.locmns.exception.DatesEmpruntAbsentesException;
+import com.mns.cda.locmns.exception.DatesEmpruntInvalidesException;
 import com.mns.cda.locmns.model.Emprunt;
 import com.mns.cda.locmns.model.Materiel;
 import com.mns.cda.locmns.model.StatutEmprunt;
@@ -25,11 +27,11 @@ public class EmpruntService {
     public Emprunt create(CreateEmpruntDto dto) {
 
         if (dto.getDateDebutEmprunt() == null || dto.getDateRetourEmpruntPrevisionelle() == null) {
-            throw new IllegalArgumentException("Les dates de début et de retour sont obligatoires.");
+            throw new DatesEmpruntAbsentesException("Les dates de début et de retour sont obligatoires.");
         }
 
         if (!dto.getDateDebutEmprunt().isBefore(dto.getDateRetourEmpruntPrevisionelle())) {
-            throw new IllegalArgumentException(
+            throw new DatesEmpruntInvalidesException(
                     "La date de début d'emprunt doit être antérieure à la date de retour prévisionnelle."
             );
         }
