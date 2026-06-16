@@ -1,50 +1,47 @@
 package com.mns.cda.locmns.exception;
 
-import com.mns.cda.locmns.dto.ReponseErreurDto;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.LocalDateTime;
+import java.net.URI;
 
 @RestControllerAdvice
 public class GestionnaireException {
 
     @ExceptionHandler(DatesEmpruntInvalidesException.class)
-    public ResponseEntity<ReponseErreurDto> gestionDatesEmpruntInvalides(
-            DatesEmpruntInvalidesException ex) {
+    public ProblemDetail handleDatesInvalides(DatesEmpruntInvalidesException ex) {
 
-        return buildError(
-                HttpStatus.BAD_REQUEST,
-                "DATES_EMPRUNT_INVALIDES",
-                ex.getMessage()
-        );
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+
+        problem.setTitle("DATES_EMPRUNT_INVALIDES");
+        problem.setDetail(ex.getMessage());
+        problem.setType(URI.create("https://api.locmns/errors/dates-invalides"));
+
+        return problem;
     }
 
     @ExceptionHandler(DatesEmpruntAbsentesException.class)
-    public ResponseEntity<ReponseErreurDto> gestionDatesEmpruntAbsentes(
-            DatesEmpruntAbsentesException ex) {
+    public ProblemDetail handleDatesAbsentes(DatesEmpruntAbsentesException ex) {
 
-        return buildError(
-                HttpStatus.BAD_REQUEST,
-                "DATES_EMPRUNT_ABSENTES",
-                ex.getMessage()
-        );
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+
+        problem.setTitle("DATES_EMPRUNT_ABSENTES");
+        problem.setDetail(ex.getMessage());
+        problem.setType(URI.create("https://api.locmns/errors/dates-absentes"));
+
+        return problem;
     }
 
-    private ResponseEntity<ReponseErreurDto> buildError(
-            HttpStatus status,
-            String code,
-            String message) {
+    @ExceptionHandler(Exception.class)
+    public ProblemDetail handleGeneric(Exception ex) {
 
-        ReponseErreurDto erreur = new ReponseErreurDto(
-                status.value(),
-                code,
-                message,
-                LocalDateTime.now()
-        );
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
 
-        return ResponseEntity.status(status).body(erreur);
+        problem.setTitle("INTERNAL_ERROR");
+        problem.setDetail("Une erreur interne est survenue");
+
+        return problem;
     }
 }

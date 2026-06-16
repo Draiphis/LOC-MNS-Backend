@@ -31,6 +31,7 @@ public class EmpruntService {
         }
 
         if (!dto.getDateDebutEmprunt().isBefore(dto.getDateRetourEmpruntPrevisionelle())) {
+            System.out.println("👉 CHECK DATES");
             throw new DatesEmpruntInvalidesException(
                     "La date de début d'emprunt doit être antérieure à la date de retour prévisionnelle."
             );
