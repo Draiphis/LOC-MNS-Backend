@@ -2,6 +2,7 @@ package com.mns.cda.locmns.controller;
 
 
 import com.mns.cda.locmns.dto.CreateEmpruntDto;
+import com.mns.cda.locmns.dto.EmpruntReponseDto;
 import com.mns.cda.locmns.dto.UpdateEmpruntDto;
 import com.mns.cda.locmns.model.Emprunt;
 import com.mns.cda.locmns.service.EmpruntService;
@@ -25,7 +26,7 @@ public class EmpruntController {
     private final EmpruntService service;
 
     @GetMapping("/list")
-    public List<Emprunt> getAll() {
+    public List<EmpruntReponseDto> getAll() {
         return service.getAll();
     }
 
@@ -59,6 +60,18 @@ public class EmpruntController {
     @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
         service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/valider")
+    public ResponseEntity<Void> valider(@PathVariable int id) {
+        service.valider(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/refuser")
+    public ResponseEntity<Void> refuser(@PathVariable int id) {
+        service.refuser(id);
         return ResponseEntity.noContent().build();
     }
 

@@ -4,6 +4,7 @@ import com.mns.cda.locmns.dao.EmpruntDao;
 import com.mns.cda.locmns.dao.MaterielDao;
 import com.mns.cda.locmns.dao.UtilisateurDao;
 import com.mns.cda.locmns.dto.CreateEmpruntDto;
+import com.mns.cda.locmns.dto.EmpruntReponseDto;
 import com.mns.cda.locmns.dto.UpdateEmpruntDto;
 import com.mns.cda.locmns.exception.DatesEmpruntAbsentesException;
 import com.mns.cda.locmns.exception.DatesEmpruntInvalidesException;
@@ -87,7 +88,39 @@ public class EmpruntService {
     }
 
     // GET ALL
-    public java.util.List<Emprunt> getAll() {
-        return empruntDao.findAll();
+    public List<EmpruntReponseDto> getAll() {
+        return empruntDao.findAll().stream().map(e -> {
+            EmpruntReponseDto dto = new EmpruntReponseDto();
+
+            dto.setId(e.getId());
+            dto.setStatut(e.getStatut().name());
+
+            dto.setMaterielId(e.getMateriel().getId());
+            dto.setMaterielNom(e.getMateriel().getReference());
+
+            dto.setDemandeurNom(e.getDemandeur().getNom());
+            dto.setDemandeurPrenom(e.getDemandeur().getPrenom());
+
+            dto.setDateDebutEmprunt(e.getDateDebutEmprunt());
+            dto.setDateRetourEmpruntPrevisionelle(e.getDateRetourEmpruntPrevisionelle());
+
+            return dto;
+        }).toList();
+    }
+
+    public void valider(int id) {
+        Emprunt emprunt = empruntDao.findById(id)
+                .orElseThrow(() -> new RuntimeException("Emprunt non trouvé"));
+
+        emprunt.setStatut(StatutEmprunt.APPROUVE);
+        empruntDao.save(emprunt);
+    }
+
+    public void refuser(int id) {
+        Emprunt emprunt = empruntDao.findById(id)
+                .orElseThrow(() -> new RuntimeException("Emprunt non trouvé"));
+
+        emprunt.setStatut(StatutEmprunt.REFUSE);
+        empruntDao.save(emprunt);
     }
 }
