@@ -6,9 +6,22 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.net.URI;
+import org.springframework.security.access.AccessDeniedException;
 
 @RestControllerAdvice
 public class GestionnaireException {
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ProblemDetail handleAccessDenied(AccessDeniedException ex) {
+
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.FORBIDDEN);
+
+        problem.setTitle("ACCESS_DENIED");
+        problem.setDetail("Vous n'avez pas les droits nécessaires.");
+        problem.setType(URI.create("https://api.locmns/errors/access-denied"));
+
+        return problem;
+    }
 
     @ExceptionHandler(DatesEmpruntInvalidesException.class)
     public ProblemDetail handleDatesInvalides(DatesEmpruntInvalidesException ex) {

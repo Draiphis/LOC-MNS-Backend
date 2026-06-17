@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.locmns.dto.CreateUtilisateurDto;
 import com.mns.cda.locmns.dto.UpdateUtilisateurDto;
 import com.mns.cda.locmns.model.Utilisateur;
+import com.mns.cda.locmns.security.IsUser;
 import com.mns.cda.locmns.service.UtilisateurService;
 import com.mns.cda.locmns.view.UtilisateurView;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@IsUser
 @RestController
 @CrossOrigin
 @RequestMapping("/user")
