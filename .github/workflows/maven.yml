@@ -28,9 +28,6 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    - name: rename .example.env to .env
-      run: mv .example.env .env
-
     - name: change db_name to postgres
       run: sed -i 's/ ${DB_HOST} /postgres/' src/main/resources/application.properties
 
@@ -68,5 +65,5 @@ jobs:
         docker run -d \
           --name loc-back \
           -p 8080:8080 \
-          --env-file .env\
+          --env-file /home/vwary/.env \
           draifis/loc-mns-back:latest
