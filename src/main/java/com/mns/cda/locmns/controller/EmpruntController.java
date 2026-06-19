@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/emprunt")
 @RequiredArgsConstructor
 @Tag(name="AppUser", description = "API pour manipuler les emprunt")

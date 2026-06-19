@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/modele")
 @RequiredArgsConstructor
 @Tag(name="AppUser", description = "API pour manipuler les modele")

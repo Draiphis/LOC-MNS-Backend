@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @IsUser
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/user")
 @RequiredArgsConstructor
 @Tag(name="AppUser", description = "API pour manipuler les utilisateur")
