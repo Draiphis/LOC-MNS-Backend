@@ -58,22 +58,17 @@ jobs:
     - name: Push docker image with version
       run: docker push draifis/loc-mns-back:${{env.VERSION}}
 
-    - name: Deploy on server via self host
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          docker pull draifis/loc-mns-back:latest
-
-          docker stop loc-back || true
-          docker rm loc-back || true
-
-          docker run -d \
-            --name loc-back \
-            -p 8080:8080 \
-            --env-file /home/deploy/.env \
-            draifis/loc-mns-back:latest
+    - name: Deploy container (local self-hosted server)
+      run: |
+        docker pull draifis/loc-mns-back:latest
+        
+        docker stop loc-back || true
+        docker rm loc-back || true
+        
+        docker run -d \
+          --name loc-back \
+          -p 8080:8080 \
+          --env-file /home/deploy/.env \
+          draifis/loc-mns-back:latest
       
 
