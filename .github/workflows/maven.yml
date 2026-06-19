@@ -68,5 +68,5 @@ jobs:
         docker run -d \
           --name loc-back \
           -p 8080:8080 \
-          --env-file /home/deploy/.env \
+          --env-file .env\
           draifis/loc-mns-back:latest
