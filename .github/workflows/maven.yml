@@ -70,5 +70,3 @@ jobs:
           -p 8080:8080 \
           --env-file /home/deploy/.env \
           draifis/loc-mns-back:latest
-      
-
