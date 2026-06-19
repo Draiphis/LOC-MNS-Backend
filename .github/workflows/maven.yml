@@ -28,9 +28,6 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    - name: change db_name to postgres
-      run: sed -i 's/ ${DB_HOST} /postgres/' src/main/resources/application.properties
-
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
