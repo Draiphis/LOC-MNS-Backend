@@ -21,8 +21,7 @@ import java.util.Set;
 @Entity
 public class Utilisateur {
 
-    public interface OnUpdate{};
-    public interface  OnCreate{};
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,31 +29,31 @@ public class Utilisateur {
     protected Integer id;
 
     @Column(nullable = false, unique = true)
-    @NotBlank( groups = {OnCreate.class}, message = "L'email ne peut pas être vide")
+    @NotBlank(message = "L'email ne peut pas être vide")
     @Email( message = "L'email est invalide")
     @JsonView(UtilisateurView.class)
     protected String email;
 
     @Column(nullable = false)
-    @NotBlank( groups = {OnCreate.class,OnUpdate.class},message = "Le mot de passe ne peut pas être vide")
+    @NotBlank(message = "Le mot de passe ne peut pas être vide")
     @Size(min = 8, max = 64)
     @JsonView(UtilisateurView.class)
     protected String password;
 
 
     @Column(nullable = false)
-    @NotBlank(groups = {OnCreate.class,OnUpdate.class}, message = "Le nom ne peut pas être vide")
+    @NotBlank(message = "Le nom ne peut pas être vide")
     @JsonView(UtilisateurView.class)
     protected String nom;
 
     @Column(nullable = false)
-    @NotBlank(groups = {OnCreate.class,OnUpdate.class}, message = "Le prénom ne peut pas être vide")
+    @NotBlank(message = "Le prénom ne peut pas être vide")
     @JsonView(UtilisateurView.class)
     protected String prenom;
 
 
     @Past
-    @NotNull(groups = {OnCreate.class,OnUpdate.class})
+    @NotNull
     @JsonView(UtilisateurView.class)
     protected LocalDate dateDeNaissance;
 
