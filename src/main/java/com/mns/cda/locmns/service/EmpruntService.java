@@ -6,6 +6,7 @@ import com.mns.cda.locmns.dao.UtilisateurDao;
 import com.mns.cda.locmns.dto.CreateEmpruntDto;
 import com.mns.cda.locmns.dto.EmpruntReponseDto;
 import com.mns.cda.locmns.dto.UpdateEmpruntDto;
+import com.mns.cda.locmns.exception.AucunMaterielDisponibleException;
 import com.mns.cda.locmns.exception.DatesEmpruntAbsentesException;
 import com.mns.cda.locmns.exception.DatesEmpruntInvalidesException;
 import com.mns.cda.locmns.model.Emprunt;
@@ -47,11 +48,17 @@ public class EmpruntService {
 
 
 
-        // récupérer un matériel libre (même si rare cas concurrent)
-        Materiel materiel = materielDao.findDisponiblesByModeleId(dto.getModeleId())
+        Materiel materiel = materielDao.findDisponiblesPourPeriode(
+                        dto.getModeleId(),
+                        dto.getDateDebutEmprunt(),
+                        dto.getDateRetourEmpruntPrevisionelle(),
+                        StatutEmprunt.REFUSE
+                )
                 .stream()
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Aucun matériel trouvé"));
+                .orElseThrow(() -> new AucunMaterielDisponibleException(
+                        "Aucun matériel n'est disponible pour toute la période sélectionnée."
+                ));
 
         Emprunt emprunt = new Emprunt();
         emprunt.setMateriel(materiel);

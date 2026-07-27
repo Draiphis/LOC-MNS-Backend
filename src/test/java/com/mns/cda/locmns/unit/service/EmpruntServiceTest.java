@@ -7,6 +7,7 @@ import com.mns.cda.locmns.dto.CreateEmpruntDto;
 import com.mns.cda.locmns.dto.UpdateEmpruntDto;
 import com.mns.cda.locmns.exception.DatesEmpruntAbsentesException;
 import com.mns.cda.locmns.exception.DatesEmpruntInvalidesException;
+import com.mns.cda.locmns.exception.AucunMaterielDisponibleException;
 import com.mns.cda.locmns.model.*;
 import com.mns.cda.locmns.service.EmpruntService;
 import org.junit.jupiter.api.Test;
@@ -74,7 +75,12 @@ class EmpruntServiceTest {
         when(utilisateurDao.findByEmail("test@mail.com"))
                 .thenReturn(Optional.of(utilisateur));
 
-        when(materielDao.findDisponiblesByModeleId(1))
+        when(materielDao.findDisponiblesPourPeriode(
+                1,
+                dto.getDateDebutEmprunt(),
+                dto.getDateRetourEmpruntPrevisionelle(),
+                StatutEmprunt.REFUSE
+        ))
                 .thenReturn(List.of(materiel));
 
         when(empruntDao.save(any())).thenAnswer(i -> i.getArgument(0));
@@ -85,6 +91,28 @@ class EmpruntServiceTest {
         assertEquals(utilisateur, result.getDemandeur());
         assertEquals(materiel, result.getMateriel());
         assertEquals(StatutEmprunt.EN_ATTENTE, result.getStatut());
+    }
+
+    @Test
+    void devraitRefuserUnePeriodeSansMaterielDisponible() {
+        mockSecurityContext();
+        CreateEmpruntDto dto = creerDtoValide();
+
+        Utilisateur utilisateur = new Utilisateur();
+        utilisateur.setEmail("test@mail.com");
+        when(utilisateurDao.findByEmail("test@mail.com"))
+                .thenReturn(Optional.of(utilisateur));
+        when(materielDao.findDisponiblesPourPeriode(
+                1,
+                dto.getDateDebutEmprunt(),
+                dto.getDateRetourEmpruntPrevisionelle(),
+                StatutEmprunt.REFUSE
+        )).thenReturn(List.of());
+
+        assertThrows(
+                AucunMaterielDisponibleException.class,
+                () -> empruntService.create(dto)
+        );
     }
 
     @Test

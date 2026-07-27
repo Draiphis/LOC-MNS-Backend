@@ -3,6 +3,7 @@ package com.mns.cda.locmns.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.locmns.dto.CreateMaterielDto;
+import com.mns.cda.locmns.dto.DisponibiliteModeleDto;
 import com.mns.cda.locmns.dto.MaterielDisponibleDto;
 import com.mns.cda.locmns.dto.UpdateMaterielDto;
 import com.mns.cda.locmns.model.Materiel;
@@ -45,6 +46,18 @@ public class MaterielController {
             @Parameter(description = "Identifiant du modèle", example = "1")
             @PathVariable int modeleId) {
         return service.getDisponibles(modeleId);
+    }
+
+    @GetMapping("/disponibilite-modele/{modeleId}")
+    @Operation(
+            summary = "Consulter la première disponibilité d'un modèle",
+            description = "Indique si le modèle est réservable et la première date de début autorisée."
+    )
+    @ApiResponse(responseCode = "200", description = "Disponibilité du modèle")
+    public DisponibiliteModeleDto getDisponibiliteModele(
+            @Parameter(description = "Identifiant du modèle", example = "1")
+            @PathVariable int modeleId) {
+        return service.getDisponibiliteModele(modeleId);
     }
 
     @GetMapping("/{id}")

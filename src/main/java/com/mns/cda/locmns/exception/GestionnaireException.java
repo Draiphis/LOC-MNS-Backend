@@ -47,6 +47,15 @@ public class GestionnaireException {
         return problem;
     }
 
+    @ExceptionHandler(AucunMaterielDisponibleException.class)
+    public ProblemDetail handleAucunMaterielDisponible(AucunMaterielDisponibleException ex) {
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+        problem.setTitle("MATERIEL_INDISPONIBLE");
+        problem.setDetail(ex.getMessage());
+        problem.setType(URI.create("https://api.locmns/errors/materiel-indisponible"));
+        return problem;
+    }
+
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleGeneric(Exception ex) {
 

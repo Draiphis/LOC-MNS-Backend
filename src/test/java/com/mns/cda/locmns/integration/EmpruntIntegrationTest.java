@@ -5,12 +5,15 @@ import com.mns.cda.locmns.dao.MaterielDao;
 import com.mns.cda.locmns.dao.ModeleDao;
 import com.mns.cda.locmns.dao.UtilisateurDao;
 import com.mns.cda.locmns.dto.CreateEmpruntDto;
+import com.mns.cda.locmns.dto.DisponibiliteModeleDto;
+import com.mns.cda.locmns.exception.AucunMaterielDisponibleException;
 import com.mns.cda.locmns.model.Emprunt;
 import com.mns.cda.locmns.model.Materiel;
 import com.mns.cda.locmns.model.Modele;
 import com.mns.cda.locmns.model.StatutEmprunt;
 import com.mns.cda.locmns.model.Utilisateur;
 import com.mns.cda.locmns.service.EmpruntService;
+import com.mns.cda.locmns.service.MaterielService;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,6 +39,9 @@ class EmpruntIntegrationTest {
 
     @Autowired
     private EmpruntService empruntService;
+
+    @Autowired
+    private MaterielService materielService;
 
     @Autowired
     private EmpruntDao empruntDao;
@@ -131,11 +137,49 @@ class EmpruntIntegrationTest {
         assertEquals(StatutEmprunt.REFUSE, refuse.getStatut());
     }
 
+    @Test
+    void devraitGriserLaPeriodeOccupeeEtAutoriserLaReservationApres() {
+        LocalDate aujourdHui = LocalDate.now();
+        CreateEmpruntDto premiereReservation = creerDto(
+                aujourdHui,
+                aujourdHui.plusDays(5)
+        );
+        empruntService.create(premiereReservation);
+        entityManager.flush();
+        entityManager.clear();
+
+        DisponibiliteModeleDto disponibilite =
+                materielService.getDisponibiliteModele(modele.getId());
+
+        assertTrue(disponibilite.isReservable());
+        assertEquals(aujourdHui.plusDays(6), disponibilite.getDateDisponibleAPartirDe());
+        assertTrue(disponibilite.getDatesIndisponibles().contains(aujourdHui));
+        assertTrue(disponibilite.getDatesIndisponibles().contains(aujourdHui.plusDays(5)));
+
+        assertThrows(
+                AucunMaterielDisponibleException.class,
+                () -> empruntService.create(creerDto(
+                        aujourdHui.plusDays(2),
+                        aujourdHui.plusDays(4)
+                ))
+        );
+
+        Emprunt reservationSuivante = empruntService.create(creerDto(
+                aujourdHui.plusDays(6),
+                aujourdHui.plusDays(8)
+        ));
+        assertNotNull(reservationSuivante.getId());
+    }
+
     private CreateEmpruntDto creerDtoValide() {
+        return creerDto(LocalDate.now().plusDays(1), LocalDate.now().plusDays(5));
+    }
+
+    private CreateEmpruntDto creerDto(LocalDate dateDebut, LocalDate dateFin) {
         CreateEmpruntDto dto = new CreateEmpruntDto();
         dto.setModeleId(modele.getId());
-        dto.setDateDebutEmprunt(LocalDate.now().plusDays(1));
-        dto.setDateRetourEmpruntPrevisionelle(LocalDate.now().plusDays(5));
+        dto.setDateDebutEmprunt(dateDebut);
+        dto.setDateRetourEmpruntPrevisionelle(dateFin);
         return dto;
     }
 }
