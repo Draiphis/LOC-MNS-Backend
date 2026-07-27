@@ -13,6 +13,8 @@ import java.util.List;
 @Repository
 public interface EmpruntDao extends JpaRepository<Emprunt, Integer> {
 
+    List<Emprunt> findByDemandeurEmailOrderByDateDemandeEmpruntDesc(String email);
+
     @Query("""
         SELECT e
         FROM Emprunt e

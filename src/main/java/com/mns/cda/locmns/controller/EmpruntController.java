@@ -36,6 +36,19 @@ public class EmpruntController {
         return service.getAll();
     }
 
+    @GetMapping("/mes-emprunts")
+    @Operation(
+            summary = "Lister mes demandes et réservations",
+            description = "Retourne uniquement les emprunts appartenant à l'utilisateur authentifié."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Demandes et réservations de l'utilisateur"),
+            @ApiResponse(responseCode = "401", description = "Utilisateur non authentifié")
+    })
+    public List<EmpruntReponseDto> getMesEmprunts() {
+        return service.getMesEmprunts();
+    }
+
     @GetMapping("/{id}")
     @Operation(summary = "Consulter un emprunt")
     @ApiResponses({

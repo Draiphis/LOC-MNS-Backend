@@ -6,6 +6,7 @@ import com.mns.cda.locmns.dao.ModeleDao;
 import com.mns.cda.locmns.dao.UtilisateurDao;
 import com.mns.cda.locmns.dto.CreateEmpruntDto;
 import com.mns.cda.locmns.dto.DisponibiliteModeleDto;
+import com.mns.cda.locmns.dto.EmpruntReponseDto;
 import com.mns.cda.locmns.exception.AucunMaterielDisponibleException;
 import com.mns.cda.locmns.model.Emprunt;
 import com.mns.cda.locmns.model.Materiel;
@@ -27,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -169,6 +171,36 @@ class EmpruntIntegrationTest {
                 aujourdHui.plusDays(8)
         ));
         assertNotNull(reservationSuivante.getId());
+    }
+
+    @Test
+    void devraitListerUniquementLesEmpruntsDuDemandeurConnecte() {
+        Emprunt empruntDuDemandeur = empruntService.create(creerDtoValide());
+
+        Utilisateur autreDemandeur = new Utilisateur();
+        autreDemandeur.setEmail("autre.demandeur@mns.fr");
+        autreDemandeur.setPassword("MotDePasseEncodePourLeTest");
+        autreDemandeur.setNom("Autre");
+        autreDemandeur.setPrenom("Demandeur");
+        autreDemandeur.setDateDeNaissance(LocalDate.of(1992, 2, 2));
+        autreDemandeur.setRoles(Collections.emptySet());
+        autreDemandeur = utilisateurDao.save(autreDemandeur);
+
+        Emprunt empruntAutreUtilisateur = new Emprunt();
+        empruntAutreUtilisateur.setDemandeur(autreDemandeur);
+        empruntAutreUtilisateur.setMateriel(materiel);
+        empruntAutreUtilisateur.setStatut(StatutEmprunt.REFUSE);
+        empruntAutreUtilisateur.setDateDebutEmprunt(LocalDate.now().plusDays(10));
+        empruntAutreUtilisateur.setDateRetourEmpruntPrevisionelle(LocalDate.now().plusDays(12));
+        empruntDao.save(empruntAutreUtilisateur);
+        entityManager.flush();
+        entityManager.clear();
+
+        List<EmpruntReponseDto> resultat = empruntService.getMesEmprunts();
+
+        assertEquals(1, resultat.size());
+        assertEquals(empruntDuDemandeur.getId(), resultat.get(0).getId());
+        assertEquals(modele.getNom(), resultat.get(0).getModeleNom());
     }
 
     private CreateEmpruntDto creerDtoValide() {

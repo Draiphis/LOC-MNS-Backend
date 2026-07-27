@@ -4,6 +4,7 @@ import com.mns.cda.locmns.dao.EmpruntDao;
 import com.mns.cda.locmns.dao.MaterielDao;
 import com.mns.cda.locmns.dao.UtilisateurDao;
 import com.mns.cda.locmns.dto.CreateEmpruntDto;
+import com.mns.cda.locmns.dto.EmpruntReponseDto;
 import com.mns.cda.locmns.dto.UpdateEmpruntDto;
 import com.mns.cda.locmns.exception.DatesEmpruntAbsentesException;
 import com.mns.cda.locmns.exception.DatesEmpruntInvalidesException;
@@ -231,5 +232,42 @@ class EmpruntServiceTest {
         Emprunt result = empruntService.getById(1);
 
         assertEquals(1, result.getId());
+    }
+
+    @Test
+    void devraitRetournerUniquementLesEmpruntsDeUtilisateurConnecte() {
+        mockSecurityContext();
+
+        Modele modele = new Modele();
+        modele.setNom("Dell Latitude");
+        modele.setImage("latitude.jpg");
+
+        Materiel materiel = new Materiel();
+        materiel.setId(12);
+        materiel.setReference("PC-012");
+        materiel.setModele(modele);
+
+        Utilisateur demandeur = new Utilisateur();
+        demandeur.setNom("Dupont");
+        demandeur.setPrenom("Alice");
+
+        Emprunt emprunt = new Emprunt();
+        emprunt.setId(4);
+        emprunt.setStatut(StatutEmprunt.EN_ATTENTE);
+        emprunt.setMateriel(materiel);
+        emprunt.setDemandeur(demandeur);
+        emprunt.setDateDebutEmprunt(LocalDate.now().plusDays(1));
+        emprunt.setDateRetourEmpruntPrevisionelle(LocalDate.now().plusDays(3));
+
+        when(empruntDao.findByDemandeurEmailOrderByDateDemandeEmpruntDesc("test@mail.com"))
+                .thenReturn(List.of(emprunt));
+
+        List<EmpruntReponseDto> resultat = empruntService.getMesEmprunts();
+
+        assertEquals(1, resultat.size());
+        assertEquals("Dell Latitude", resultat.get(0).getModeleNom());
+        assertEquals("PC-012", resultat.get(0).getMaterielNom());
+        verify(empruntDao).findByDemandeurEmailOrderByDateDemandeEmpruntDesc("test@mail.com");
+        verify(empruntDao, never()).findAll();
     }
 }

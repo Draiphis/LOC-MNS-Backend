@@ -96,23 +96,18 @@ public class EmpruntService {
 
     // GET ALL
     public List<EmpruntReponseDto> getAll() {
-        return empruntDao.findAll().stream().map(e -> {
-            EmpruntReponseDto dto = new EmpruntReponseDto();
+        return empruntDao.findAll().stream()
+                .map(this::versDto)
+                .toList();
+    }
 
-            dto.setId(e.getId());
-            dto.setStatut(e.getStatut().name());
+    public List<EmpruntReponseDto> getMesEmprunts() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-            dto.setMaterielId(e.getMateriel().getId());
-            dto.setMaterielNom(e.getMateriel().getReference());
-
-            dto.setDemandeurNom(e.getDemandeur().getNom());
-            dto.setDemandeurPrenom(e.getDemandeur().getPrenom());
-
-            dto.setDateDebutEmprunt(e.getDateDebutEmprunt());
-            dto.setDateRetourEmpruntPrevisionelle(e.getDateRetourEmpruntPrevisionelle());
-
-            return dto;
-        }).toList();
+        return empruntDao.findByDemandeurEmailOrderByDateDemandeEmpruntDesc(email)
+                .stream()
+                .map(this::versDto)
+                .toList();
     }
 
     public void valider(int id) {
@@ -129,5 +124,26 @@ public class EmpruntService {
 
         emprunt.setStatut(StatutEmprunt.REFUSE);
         empruntDao.save(emprunt);
+    }
+
+    private EmpruntReponseDto versDto(Emprunt emprunt) {
+        EmpruntReponseDto dto = new EmpruntReponseDto();
+
+        dto.setId(emprunt.getId());
+        dto.setStatut(emprunt.getStatut().name());
+
+        dto.setMaterielId(emprunt.getMateriel().getId());
+        dto.setMaterielNom(emprunt.getMateriel().getReference());
+        dto.setModeleNom(emprunt.getMateriel().getModele().getNom());
+
+        dto.setDemandeurNom(emprunt.getDemandeur().getNom());
+        dto.setDemandeurPrenom(emprunt.getDemandeur().getPrenom());
+
+        dto.setDateDemandeEmprunt(emprunt.getDateDemandeEmprunt());
+        dto.setDateDebutEmprunt(emprunt.getDateDebutEmprunt());
+        dto.setDateRetourEmpruntPrevisionelle(emprunt.getDateRetourEmpruntPrevisionelle());
+        dto.setDateRetourEmpruntReelle(emprunt.getDateRetourEmpruntReelle());
+
+        return dto;
     }
 }
