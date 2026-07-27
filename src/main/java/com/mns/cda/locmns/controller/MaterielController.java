@@ -8,6 +8,10 @@ import com.mns.cda.locmns.dto.UpdateMaterielDto;
 import com.mns.cda.locmns.model.Materiel;
 import com.mns.cda.locmns.service.MaterielService;
 import com.mns.cda.locmns.view.MaterielView;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,29 +25,48 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/materiel")
 @RequiredArgsConstructor
-@Tag(name="AppUser", description = "API pour manipuler les materiel")
+@Tag(name = "Matériels", description = "Gestion des exemplaires physiques du catalogue")
 public class MaterielController {
 
     private final MaterielService service;
 
     @GetMapping("/list")
     @JsonView(MaterielView.class )
+    @Operation(summary = "Lister les matériels")
+    @ApiResponse(responseCode = "200", description = "Liste des matériels")
     public List<Materiel> getAll() {
         return service.getAll();
     }
 
     @GetMapping("/disponibles/{modeleId}")
-    public List<MaterielDisponibleDto> getDisponibles(@PathVariable int modeleId) {
+    @Operation(summary = "Lister les matériels disponibles d'un modèle")
+    @ApiResponse(responseCode = "200", description = "Liste des matériels disponibles")
+    public List<MaterielDisponibleDto> getDisponibles(
+            @Parameter(description = "Identifiant du modèle", example = "1")
+            @PathVariable int modeleId) {
         return service.getDisponibles(modeleId);
     }
 
     @GetMapping("/{id}")
     @JsonView(MaterielView.class )
-    public ResponseEntity<Materiel> get(@PathVariable int id) {
+    @Operation(summary = "Consulter un matériel")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Matériel trouvé"),
+            @ApiResponse(responseCode = "404", description = "Matériel introuvable")
+    })
+    public ResponseEntity<Materiel> get(
+            @Parameter(description = "Identifiant du matériel", example = "1")
+            @PathVariable int id) {
         return ResponseEntity.ok(service.getById(id));
     }
 
     @PostMapping("/create")
+    @Operation(summary = "Créer un matériel")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Matériel créé"),
+            @ApiResponse(responseCode = "400", description = "Données invalides"),
+            @ApiResponse(responseCode = "409", description = "Référence déjà utilisée")
+    })
     public ResponseEntity<Materiel> create(
             @RequestBody @Valid CreateMaterielDto dto) {
 
@@ -51,7 +74,14 @@ public class MaterielController {
     }
 
     @PutMapping("/modify/{id}")
+    @Operation(summary = "Modifier un matériel")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Matériel modifié"),
+            @ApiResponse(responseCode = "400", description = "Données invalides"),
+            @ApiResponse(responseCode = "404", description = "Matériel introuvable")
+    })
     public ResponseEntity<Void> update(
+            @Parameter(description = "Identifiant du matériel", example = "1")
             @PathVariable int id,
             @RequestBody @Valid UpdateMaterielDto dto) {
 
@@ -60,7 +90,14 @@ public class MaterielController {
     }
 
     @DeleteMapping("delete/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id) {
+    @Operation(summary = "Supprimer un matériel")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Matériel supprimé"),
+            @ApiResponse(responseCode = "404", description = "Matériel introuvable")
+    })
+    public ResponseEntity<Void> delete(
+            @Parameter(description = "Identifiant du matériel", example = "1")
+            @PathVariable int id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }

@@ -8,6 +8,10 @@ import com.mns.cda.locmns.dto.UpdateTypeDto;
 import com.mns.cda.locmns.model.Type;
 import com.mns.cda.locmns.service.TypeService;
 import com.mns.cda.locmns.view.TypeView;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,29 +25,45 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/type")
 @RequiredArgsConstructor
-@Tag(name="AppUser", description = "API pour manipuler les type")
+@Tag(name = "Types", description = "Gestion des catégories de matériel")
 public class TypeController {
 
     private final TypeService service;
 
     @GetMapping("/list")
     @JsonView(TypeView.class )
+    @Operation(summary = "Lister les types")
+    @ApiResponse(responseCode = "200", description = "Liste des types")
     public List<Type> getAll() {
         return service.getAll();
     }
 
     @GetMapping("/stock")
+    @Operation(summary = "Consulter le stock regroupé par type")
+    @ApiResponse(responseCode = "200", description = "Quantités disponibles par type")
     public ResponseEntity<List<StockParTypeDto>> getStockParType() {
         return ResponseEntity.ok(service.getStockParType());
     }
 
     @GetMapping("/{id}")
     @JsonView(TypeView.class )
-    public ResponseEntity<Type> get(@PathVariable int id) {
+    @Operation(summary = "Consulter un type")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Type trouvé"),
+            @ApiResponse(responseCode = "404", description = "Type introuvable")
+    })
+    public ResponseEntity<Type> get(
+            @Parameter(description = "Identifiant du type", example = "1")
+            @PathVariable int id) {
         return ResponseEntity.ok(service.getById(id));
     }
 
     @PostMapping("/create")
+    @Operation(summary = "Créer un type")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Type créé"),
+            @ApiResponse(responseCode = "400", description = "Données invalides")
+    })
     public ResponseEntity<Type> create(
             @RequestBody @Valid CreateTypeDto dto) {
 
@@ -51,7 +71,14 @@ public class TypeController {
     }
 
     @PutMapping("/modify/{id}")
+    @Operation(summary = "Modifier un type")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Type modifié"),
+            @ApiResponse(responseCode = "400", description = "Données invalides"),
+            @ApiResponse(responseCode = "404", description = "Type introuvable")
+    })
     public ResponseEntity<Void> update(
+            @Parameter(description = "Identifiant du type", example = "1")
             @PathVariable int id,
             @RequestBody @Valid UpdateTypeDto dto) {
 
@@ -60,7 +87,14 @@ public class TypeController {
     }
 
     @DeleteMapping("delete/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id) {
+    @Operation(summary = "Supprimer un type")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Type supprimé"),
+            @ApiResponse(responseCode = "404", description = "Type introuvable")
+    })
+    public ResponseEntity<Void> delete(
+            @Parameter(description = "Identifiant du type", example = "1")
+            @PathVariable int id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
