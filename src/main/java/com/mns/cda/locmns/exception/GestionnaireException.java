@@ -56,6 +56,15 @@ public class GestionnaireException {
         return problem;
     }
 
+    @ExceptionHandler(EmailDejaUtiliseException.class)
+    public ProblemDetail handleEmailDejaUtilise(EmailDejaUtiliseException ex) {
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+        problem.setTitle("EMAIL_DEJA_UTILISE");
+        problem.setDetail(ex.getMessage());
+        problem.setType(URI.create("https://api.locmns/errors/email-deja-utilise"));
+        return problem;
+    }
+
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleGeneric(Exception ex) {
 

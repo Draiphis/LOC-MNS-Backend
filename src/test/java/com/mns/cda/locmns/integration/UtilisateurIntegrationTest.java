@@ -4,6 +4,7 @@ import com.mns.cda.locmns.dao.RoleDao;
 import com.mns.cda.locmns.dao.UtilisateurDao;
 import com.mns.cda.locmns.dto.CreateUtilisateurDto;
 import com.mns.cda.locmns.dto.UpdateUtilisateurDto;
+import com.mns.cda.locmns.exception.EmailDejaUtiliseException;
 import com.mns.cda.locmns.model.Role;
 import com.mns.cda.locmns.model.RoleNom;
 import com.mns.cda.locmns.model.Utilisateur;
@@ -103,6 +104,22 @@ class UtilisateurIntegrationTest {
         entityManager.flush();
 
         assertFalse(utilisateurDao.existsById(modifie.getId()));
+    }
+
+    @Test
+    void devraitRefuserLaCreationAvecUnEmailDejaUtilise() {
+        CreateUtilisateurDto dto = creerUtilisateurDto(
+                "email.unique@mns.fr",
+                "Premier",
+                "Utilisateur"
+        );
+        utilisateurService.create(dto);
+        entityManager.flush();
+
+        assertThrows(
+                EmailDejaUtiliseException.class,
+                () -> utilisateurService.create(dto)
+        );
     }
 
     private CreateUtilisateurDto creerUtilisateurDto(String email, String nom, String prenom) {

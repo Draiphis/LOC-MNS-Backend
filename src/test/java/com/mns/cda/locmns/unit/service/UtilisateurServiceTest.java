@@ -4,6 +4,7 @@ import com.mns.cda.locmns.dao.RoleDao;
 import com.mns.cda.locmns.dao.UtilisateurDao;
 import com.mns.cda.locmns.dto.CreateUtilisateurDto;
 import com.mns.cda.locmns.dto.UpdateUtilisateurDto;
+import com.mns.cda.locmns.exception.EmailDejaUtiliseException;
 import com.mns.cda.locmns.model.Role;
 import com.mns.cda.locmns.model.RoleNom;
 import com.mns.cda.locmns.model.Utilisateur;
@@ -63,6 +64,23 @@ class UtilisateurServiceTest {
 
         verify(roleDao, times(1)).findByRole(RoleNom.DEFAULT);
         verify(utilisateurDao, times(1)).save(any(Utilisateur.class));
+    }
+
+    @Test
+    void devraitRefuserUnEmailDejaUtilise() {
+        CreateUtilisateurDto dto = new CreateUtilisateurDto();
+        dto.setEmail("existant@mail.com");
+
+        when(utilisateurDao.existsByEmail("existant@mail.com")).thenReturn(true);
+
+        EmailDejaUtiliseException exception = assertThrows(
+                EmailDejaUtiliseException.class,
+                () -> utilisateurService.create(dto)
+        );
+
+        assertTrue(exception.getMessage().contains("existant@mail.com"));
+        verify(utilisateurDao, never()).save(any());
+        verify(roleDao, never()).findByRole(any());
     }
 
     @Test

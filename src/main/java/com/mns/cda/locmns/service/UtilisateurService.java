@@ -4,6 +4,7 @@ import com.mns.cda.locmns.dao.RoleDao;
 import com.mns.cda.locmns.dao.UtilisateurDao;
 import com.mns.cda.locmns.dto.CreateUtilisateurDto;
 import com.mns.cda.locmns.dto.UpdateUtilisateurDto;
+import com.mns.cda.locmns.exception.EmailDejaUtiliseException;
 import com.mns.cda.locmns.model.Role;
 import com.mns.cda.locmns.model.RoleNom;
 import com.mns.cda.locmns.model.Utilisateur;
@@ -23,6 +24,12 @@ public class UtilisateurService {
 
     // CREATE
     public Utilisateur create(CreateUtilisateurDto dto) {
+        if (utilisateurDao.existsByEmail(dto.getEmail())) {
+            throw new EmailDejaUtiliseException(
+                    "Un utilisateur possède déjà l'adresse e-mail " + dto.getEmail() + "."
+            );
+        }
+
         Utilisateur u = new Utilisateur();
 
 
